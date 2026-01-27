@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="d-flex flex-wrap p-3">
+    <!-- <div class="col-2 bg-white p-3">
+        <h4>All catagories</h4>
+        {% for cat in catagory %}
+        <div class="form-check">
+            <a href="{% url 'catagory_wise_post' cat.slug %}" class="text-decoration-none text-primary"> {{cat.name}}</a>
+        </div>
+        {% endfor %}
+    </div> -->
+    <div class="col-10 p-3">
+        <h4>{{data|length}} results found </h4>
+        <div class="d-flex flex-wrap pt-4">
+            {% for post in data %}
+            <div class="col-sm-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{post.title}} </h5>
+                        <p class="card-text">{{post.content}} </p>
+                        <p>
+                            <small>Author : {{post.author.first_name}} {{post.author.last_name}} </small>
+                        </p>
+                        <p>Catagory :{% for cat in post.catagory.all %}
+                            <button class="btn btn-primary btn-sm m-2" disabled>{{cat.name}}</button>
+                            {% endfor %}
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
