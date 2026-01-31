@@ -1,20 +1,22 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from .import forms
 from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm
 from django.contrib.auth import authenticate,login,update_session_auth_hash,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from posts.models import Post
+from author.models import Author
 # Create your views here.
 
 
 def register(request):
     if request.method=='POST':
-        registerForm=forms.registrationForm(request.POST)
+        registerForm=forms.registrationForm(request.POST,request.FILES)
         if registerForm.is_valid():
-            registerForm.save()
+            user=registerForm.save()
+            login(request,user)
             messages.success(request,'Account created successfully')
-            return redirect('register')
+            return redirect('profile')
     else:
         registerForm=forms.registrationForm()
     return render(request,'register.html',{'form':registerForm,'type':'Register'})
@@ -36,8 +38,9 @@ def user_login(request):
 
 @login_required
 def profile(request):
-    data=Post.objects.filter(author=request.user)
-    return render(request,'profile.html',{'data':data})
+    author=get_object_or_404(Author,user=request.user)
+    data=Post.objects.filter(author=author)
+    return render(request,'profile.html',{'data':data,'author':author})
 
 @login_required
 def edit_profile(request):

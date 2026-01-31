@@ -1,0 +1,88 @@
+.register-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.register-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.register-header h2 {
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.register-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.register-card form .form-control{
+    border-radius: 8px;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.register-card form .form-control:focus{
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.register-card .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    transition: transform 0.2s ease;
+}
+
+.register-card .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.register-footer {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #d3cdcd;
+}
+
+.register-footer a {
+    color: #667eea;
+    transition: color 0.3s ease;
+}
+
+.register-footer a:hover {
+    color: #764ba2;
+}
+
+
+@media (max-width: 768px) {
+    .register-card {
+        padding: 30px 20px;
+    }
+    
+    .register-container {
+        padding: 10px;
+    }
+}
