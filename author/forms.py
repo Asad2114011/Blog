@@ -1,17 +1,30 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm,UserChangeForm
+from django.contrib.auth.forms import UserCreationForm,UserChangeForm,AuthenticationForm
 from author.models import Author
 
 class registrationForm(UserCreationForm):
-    display_name=forms.CharField(max_length=100,label="Display Name")
-    email=forms.EmailField(required=True)
-    bio=forms.CharField(widget=forms.Textarea,label="Bio")
+    display_name=forms.CharField(max_length=100,label="Display Name",widget=forms.TextInput(attrs={'placeholder':'Enter your display name'}))
+    email=forms.EmailField(required=True,label="Email",widget=forms.EmailInput(attrs={'placeholder':'Enter your email'}))
+    bio=forms.CharField(widget=forms.Textarea(attrs={'placeholder':'Write your bio here..'}),label="Bio")
     profile_image=forms.ImageField(required=False,label="Profile Image")
+  
 
     class Meta:
         model=User
         fields=['username','email','password1','password2']
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.fields['username'].widget.attrs.update({
+            'placeholder': 'Enter your username'
+        })
+        self.fields['password1'].widget.attrs.update({
+            'placeholder': 'Enter your password'
+        })
+        self.fields['password2'].widget.attrs.update({
+            'placeholder': 'Confirm your password'
+        })
         
     field_order = ['username', 'email', 'display_name', 'bio', 'profile_image', 'password1', 'password2']
 
@@ -37,8 +50,35 @@ class registrationForm(UserCreationForm):
             )
         return user
 
-class changeuserform(UserChangeForm):
-    password=None
+class CustomAuthenticationForm(AuthenticationForm):
+    username=forms.CharField(
+        label='Username or Email',
+        max_length=200,
+        widget=forms.TextInput(attrs={'placeholder':'Enter username or email'})
+    )
+    password=forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(attrs={'placeholder':'Enter password'})
+    )
+
+class AuthorUpdateForm(forms.ModelForm):
     class Meta:
-        model=User
-        fields=['username','first_name','last_name','email']
+        model=Author
+        fields=['name','email','bio','profile_image']
+        labels = {
+            'name':'Display Name'
+        }
+        widgets={
+            'bio':forms.Textarea(attrs={'row':4})
+        }
+        
+    def save(self, commit=True):
+        author = super().save(commit=False)
+        
+        if commit:
+            author.save()
+            author.user.email = author.email
+            author.user.save()
+        
+        return author
+   

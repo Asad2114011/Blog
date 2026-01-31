@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-
+   {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
 <!-- Author Profile Section -->
 <div class="container mt-4">
     <div class="row">
@@ -19,7 +26,7 @@
                             <p class="mt-2">{{ author.bio }}</p>
                         </div>
                     </div>
-                    <a class="btn btn-primary mt-3" href="#">Edit Profile</a>
+                    <a class="btn btn-primary mt-3" href="{% url 'edit_profile' %}">Edit Profile</a>
                 </div>
             </div>
         </div>

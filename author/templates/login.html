@@ -5,22 +5,22 @@
 <div class="login-container">
     <div class="login-card">
         <div class="login-header">
-            <h2>Change your password</h2>
-            <hr>
+            <h2>Login your account</h2>
+            <p>Write yours or Read others</p>
         </div>
         <form method="POST">
             {% csrf_token %}
             {{form|crispy}}
             <div class="d-grid gap-2 mt-4">
                 <button type="submit" class="btn btn-primary btn-lg" >
-                    Submit
+                    Login
                 </button>
             </div>
         </form>
         <div class="login-footer">
             <p class="text-center">
-                Want to update profile info ?
-            <a href="{% url 'edit_profile'%}" class="text-decoration-none fw-bold">Update profile</a>
+                If you dont have an account ?
+            <a href="#" class="text-decoration-none fw-bold">Register</a>
             </p>
         </div>
     </div>

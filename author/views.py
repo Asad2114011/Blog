@@ -14,27 +14,34 @@ def register(request):
         registerForm=forms.registrationForm(request.POST,request.FILES)
         if registerForm.is_valid():
             user=registerForm.save()
-            login(request,user)
-            messages.success(request,'Account created successfully')
-            return redirect('profile')
+            username=registerForm.cleaned_data.get('username')
+            password=registerForm.cleaned_data.get('password1')
+            user=authenticate(request,username=username,password=password)
+
+            if user is not None:
+                login(request,user)
+                messages.success(request,'Account created successfully')
+                return redirect('profile')
     else:
         registerForm=forms.registrationForm()
     return render(request,'register.html',{'form':registerForm,'type':'Register'})
 
 def user_login(request):
     if request.method=='POST':
-        form=AuthenticationForm(request,request.POST)
+        form=forms.CustomAuthenticationForm(request,request.POST)
         if form.is_valid():
-            user_name=form.cleaned_data['username']
+            username_or_email=form.cleaned_data['username']
             user_pass=form.cleaned_data['password']
-            user=authenticate(username=user_name,password=user_pass)
+            user=authenticate(request,username=username_or_email,password=user_pass)
             if user is not None:
-                messages.success(request,'Logged in successfully')
                 login(request,user)
+                messages.success(request,'Logged in successfully')
                 return redirect('profile')
+            else:
+                messages.error(request,'Invalid credentials')
     else:
-        form=AuthenticationForm()
-    return render(request,'registration/login.html',{'form':form,'type':'Login'})
+        form=forms.CustomAuthenticationForm()
+    return render(request,'login.html',{'form':form,'type':'Login'})
 
 @login_required
 def profile(request):
@@ -44,14 +51,16 @@ def profile(request):
 
 @login_required
 def edit_profile(request):
+    author=get_object_or_404(Author,user=request.user)
+
     if request.method=='POST':
-        profile_form=forms.changeuserform(request.POST,instance=request.user)
+        profile_form=forms.AuthorUpdateForm(request.POST,request.FILES,instance=author)
         if profile_form.is_valid():
             profile_form.save()
             messages.success(request,'Profile updated successfully')
             return redirect('profile')
     else:
-        profile_form=forms.changeuserform(instance=request.user)
+        profile_form=forms.AuthorUpdateForm(instance=author)
     return render(request,'update_profile.html',{'form':profile_form})
 
 def change_pass(request):
