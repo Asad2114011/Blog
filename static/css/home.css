@@ -1,0 +1,41 @@
+.post-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+}
+
+.list-group-item.active {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.interaction-link:hover {
+    color: #0d6efd !important;
+}
+
+.interaction-link:hover i {
+    transform: scale(1.2);
+    transition: transform 0.2s;
+}
+
+@media(max-width:640px) {
+    .post_image_lg {
+        display: none !important;
+    }
+    .card-title{
+        font-size: 18px !important;
+    }
+}
+
+@media(min-width:768px) {
+    .post_image_sm {
+        display: none !important;
+    }
+}

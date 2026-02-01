@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="home-container">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="header m-0"
+                    style="background-color: #f2f7f7; position: sticky; top: 56px; z-index: 999; border-bottom: 2px solid #e0e0e0; padding: 15px 0;">
+                    {% if selected_category %}
+                    <div class="mb-2">
+                        <h3>Posts in "{{ selected_category.name }}"</h3>
+                        <a href="{% url 'home' %}" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-x"></i> Clear filter
+                        </a>
+                    </div>
+                    {% else %}
+                    <h3 class="mb-2">Latest Posts</h3>
+                    {% endif %}
+                </div>
+                {% for post in data %}
+                <div class="cold-md-8"></div>
+            </div>
+
+        </div>
+
+        {% endblock %}

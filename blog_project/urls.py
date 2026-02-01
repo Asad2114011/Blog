@@ -26,8 +26,8 @@ urlpatterns = [
     path('author/', include('author.urls')),
     path('catagories/', include('catagories.urls')),
     path('posts/', include('posts.urls')),
-    path('', views.home, name='homepage'),
-    path('catagory/<catagory_slug>/', views.home, name='catagory_wise_post'),
+    path('', views.home, name='home'),
+    path('category/<catagory_slug>/', views.home, name='category_posts'),
 ]
 
 if settings.DEBUG:

@@ -6,7 +6,7 @@
     <div class="login-card">
         <div class="login-header">
             <h2>Login your account</h2>
-            <p>Write yours or Read others</p>
+            <p>Write yours & Read others</p>
         </div>
         <form method="POST">
             {% csrf_token %}
@@ -20,7 +20,7 @@
         <div class="login-footer">
             <p class="text-center">
                 If you dont have an account ?
-            <a href="#" class="text-decoration-none fw-bold">Register</a>
+            <a href="{% url 'register' %}" class="text-decoration-none fw-bold">Register</a>
             </p>
         </div>
     </div>
