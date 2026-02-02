@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid py-md-5 px-md-5">
+    <div class="row">
+        <div class="col-lg-9 col-md-12">
+            <div class="post-details-container">
+                <div class="post-title mb-4">
+                    <h4 style="font-size: 28px; font-weight: bold;" >{{post.title}}</h4>
+                </div>
+                <!-- author info  -->
+                <div class="d-flex align-items-center mb-3">
+                    {% if post.author.profile_image %}
+                    <img src="{{ post.author.profile_image.url }}" class="rounded-circle me-2"
+                        alt="{{ post.author.name }}" width="30" height="30" style="object-fit: cover;">
+                    {% else %}
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2"
+                        style="width: 30px; height: 30px; font-weight: bold;">
+                        {{ post.author.name|first|upper }}
+                    </div>
+                    {% endif %}
+                    <a href="#" style="text-decoration: none; color: black;">
+                        <h6 class="mb-0" style="font-size: 15px;">{{ post.author.name }}</h6>
+                    </a>
+                    <small class="text-muted ms-5">
+                        {{post.created_at|date:'M d, Y'}}
+                    </small>
+                </div>
+                <div class="d-flex justify-content-between align-items-center pt-2 pb-2 mb-3 border-top border-bottom">
+                    <div class="d-flex gap-3">
+                        <!-- like -->
+                        <a href="{% url 'post_details' post.id %}"
+                            class="text-decoration-none text-muted interaction-link">
+                            <i class="fa-solid fa-heart"></i>
+                            <span class="ms-1">{{ post.likes.count }}</span>
+                        </a>
+                        <!-- comment -->
+                        <a href="{% url 'post_details' post.id %}"
+                            class="text-decoration-none text-muted interaction-link">
+                            <i class="fa-solid fa-comment"></i>
+                            <span class="ms-1">{{ post.comments.count }}</span>
+                        </a>
+
+                        <!-- Views -->
+                        <a href="{% url 'post_details' post.id %}"
+                            class="text-decoration-none text-muted interaction-link">
+                            <i class="fa-solid fa-street-view"></i>
+                            <span class="ms-1">{{ post.view_count }}</span>
+                        </a>
+                    </div>
+
+                    <div class="d-flex gap-4">
+                        <a href="#" class="text-decoration-none text-muted interaction-link">
+                            <i class="fa-solid fa-bookmark"></i>
+                        </a>
+                        <a href="#" class="text-decoration-none text-muted interaction-link">
+                            <i class="fa-solid fa-share"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="container post-content">
+                    <img src="{{ post.post_image.url }}"  class="img-fluid object-fit-cover" >
+                    <h5 style="font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;line-height: 1.7; font-size: 16px;">{{post.content|safe}}</h5>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

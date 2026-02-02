@@ -273,7 +273,9 @@
       .hamburger-menu {
         display: block;
       }
-
+      .divider{
+        display: none;
+      }
       .left-sidebar {
         position: fixed;
         top: 0;
@@ -321,7 +323,9 @@
       .search-container {
         display: none;
       }
-
+      .divider{
+        display: none;
+      }
       .search-container.active {
         display: flex;
         align-items: center;

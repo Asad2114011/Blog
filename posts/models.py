@@ -2,12 +2,12 @@ from django.db import models
 from catagories.models import catagory,Tag
 from author.models import Author
 from django.utils.text import slugify
-
+from tinymce.models import HTMLField
 # Create your models here.
 class Post(models.Model):
     title=models.CharField(max_length=200)
     slug=models.SlugField(max_length=250,unique=True,blank=True)
-    content=models.TextField()
+    content=HTMLField()
     post_image=models.ImageField(upload_to='posts/',blank=True,null=True)
     view_count=models.PositiveIntegerField(default=0)
     catagory=models.ForeignKey(catagory,on_delete=models.PROTECT,related_name='posts')

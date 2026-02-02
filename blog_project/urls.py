@@ -19,7 +19,7 @@ from django.urls import path,include
 from .import views
 from django.conf import settings
 from django.conf.urls.static import static
-
+from posts.views import tinymce_upload
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +28,8 @@ urlpatterns = [
     path('posts/', include('posts.urls')),
     path('', views.home, name='home'),
     path('category/<catagory_slug>/', views.home, name='category_posts'),
+    path('tinymce/', include('tinymce.urls')),
+    path('tinymce/upload/', tinymce_upload, name='tinymce_upload'),
 ]
 
 if settings.DEBUG:

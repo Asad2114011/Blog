@@ -53,7 +53,7 @@
                                     <!-- post content  -->
                                     <div class=" mb-2">
                                         <div class="d-flex align-items-center justify-content-between gap-1 ">
-                                            <a href="#" class="text-decoration-none text-dark card-title "
+                                            <a href="{% url 'post_details' post.id %}" class="text-decoration-none text-dark card-title "
                                                 style="font-size: 23px; font-weight: bold;">
                                                 {{ post.title }}
                                             </a> 
@@ -66,7 +66,7 @@
                                     </div>
                                     <p class="card-text text-muted mb-2"
                                         style="font-family: Arial, Helvetica, sans-serif;">
-                                        {{post.content|truncatewords:20}}
+                                        {{post.content|safe|truncatewords_html:30}}
                                     </p>
                                     <!-- tags  -->
                                     <div class="mb-1">
@@ -78,21 +78,21 @@
                                     <div class="d-flex justify-content-between align-items-center pt-1 border-top">
                                         <div class="d-flex gap-3">
                                             <!-- like -->
-                                            <a href="#" class="text-decoration-none text-muted interaction-link">
+                                            <a href="{% url 'post_details' post.id %}" class="text-decoration-none text-muted interaction-link">
                                                 <i class="fa-solid fa-heart"></i>
                                                 <span class="ms-1">{{ post.likes.count }}</span>
                                             </a>
                                             <!-- comment -->
-                                            <a href="#" class="text-decoration-none text-muted interaction-link">
+                                            <a href="{% url 'post_details' post.id %}" class="text-decoration-none text-muted interaction-link">
                                                 <i class="fa-solid fa-comment"></i>
                                                 <span class="ms-1">{{ post.comments.count }}</span>
                                             </a>
 
                                             <!-- Views -->
-                                            <span class="text-muted">
+                                            <a href="{% url 'post_details' post.id %}" class="text-decoration-none text-muted interaction-link">
                                                 <i class="fa-solid fa-street-view"></i>
                                                 <span class="ms-1">{{ post.view_count }}</span>
-                                            </span>
+                                            </a>
                                         </div>
 
                                         <div class="d-flex gap-4">
