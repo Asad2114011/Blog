@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h2>Edit your Post</h2>
+            <p>Update your thoughts and share with world</p>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form|crispy}}
+            <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg" >
+                    Submit
+                </button>
+            </div>
+        </form>
+        <div class="login-footer">
+            <p class="text-center">
+                Want to create new Post ?
+            <a href="{% url 'create_post' %}" class="text-decoration-none fw-bold">Create Post</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

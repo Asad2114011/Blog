@@ -269,7 +269,7 @@
 
 
     /* mobile screen  */
-    @media (max-width: 980px) {
+    @media (max-width: 768px) {
       .hamburger-menu {
         display: block;
       }
@@ -317,7 +317,7 @@
       }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 767px) {
       .search-container {
         display: none;
       }
@@ -325,12 +325,11 @@
       .search-container.active {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 10px;
         position: fixed;
         top: 56px;
-        left: 0;
-        width: 340px;
-        ;
+        width:100%;
         border-radius: 12px;
         z-index: 1000;
       }

@@ -25,7 +25,7 @@
     transition: transform 0.2s;
 }
 
-@media(max-width:640px) {
+@media(max-width:767px) {
     .post_image_lg {
         display: none !important;
     }
