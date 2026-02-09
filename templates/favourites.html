@@ -1,74 +1,13 @@
 {% extends 'base.html' %}
-{%load static%}
+{% load static %}
 {% block content %}
-
-{% if messages %}
-<div class="container-fluid px-3 px-md-4 mt-3">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<div class="container-fluid px-3 px-md-4 mt-4">
-    <div class="card mb-4 shadow-sm border-0">
-        <div class="card-body p-3 p-md-4">
-            <div class="row align-items-center">
-                <div class="col-12 col-md-auto text-center text-md-start mb-3 mb-md-0">
-                    {% if author.profile_image %}
-                    <img src="{{ author.profile_image.url }}" alt="{{ author.name }}" class="rounded-circle shadow-sm"
-                        style="width: 120px; height: 120px; object-fit: cover;">
-                    {% else %}
-                    <div class="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center shadow-sm"
-                        style="width: 120px; height: 120px; font-size: 48px; font-weight: bold;">
-                        {{ author.name|first|upper }}
-                    </div>
-                    {% endif %}
-                </div>
-
-                <!-- profile info -->
-                <div class="col-12 col-md">
-                    <div class="profile-info">
-                        <h5 class="mb-2">
-                            <span class="text-muted small d-inline">Username: </span>
-                            <span class="fw-semibold d-inline">{{ author.user.username }}</span>
-                        </h5>
-                        <h5 class="mb-2">
-                            <span class="text-muted small d-inline">Display Name: </span>
-                            <span class="fw-semibold d-inline">{{ author.name }}</span>
-                        </h5>
-                        <h5 class="mb-2">
-                            <span class="text-muted small d-inline">Email: </span>
-                            <span class="fw-semibold d-inline">{{ author.email }}</span>
-                        </h5>
-                        <h5 class="mb-2">
-                            <span class="text-muted  small d-inline">Bio: </span>
-                            <span class="mb-0 d-inline">{{ author.bio|default:"No bio available" }}</span>
-                        </h5>
-                    </div>
-                </div>
-                <!-- edit button -->
-                <div class="col-12 col-md-auto text-center text-md-end mt-3 mt-md-0">
-                    <a class="btn btn-primary px-4" href="{% url 'edit_profile' %}">
-                        <i class="fa-solid fa-pen me-2"></i>Edit Profile
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
 <div class="home-container m-0">
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-12">
                 <div class="header mb-2 p-1"
                     style="background-color: #f2f7f7;border-bottom: 2px solid #e0e0e0; padding: 15px 0;">
-                    <h3> My Posts <i class="badge bg-primary rounded-pill">{{data.count}}</i></h3>
+                    <h3> My Bookmarked Posts <i class="badge bg-primary rounded-pill">{{data.count}}</i></h3>
                     <hr>
                 </div>
 
@@ -104,20 +43,13 @@
                                                 </small>
                                             </div>
                                         </div>
-                                        <!-- edit & delete link  -->
-                                        <div class="d-flex gap-2 ms-auto ms-sm-0" style="height: fit-content;" >
-                                            <a href="{% url 'edit_post' post.id %}" class="btn btn-sm btn-outline-primary">
-                                                <i class="fa-solid fa-pen d-inline"></i>
-                                            </a>
-                                            <a href="{% url 'delete_post' post.id %}" class="btn btn-sm btn-outline-danger">
-                                                <i class="fa-solid fa-trash d-inline"></i>
-                                            </a>
-                                        </div>
+                                       
                                     </div>
                                     <!-- post content  -->
                                     <div class=" mb-2">
                                         <div class="d-flex align-items-center justify-content-between gap-1 ">
-                                            <a href="{% url 'post_details' post.id %}" class="text-decoration-none text-dark card-title "
+                                            <a href="{% url 'post_details' post.slug %}"
+                                                class="text-decoration-none text-dark card-title "
                                                 style="font-size: 23px; font-weight: bold;">
                                                 {{ post.title }}
                                             </a>
@@ -142,56 +74,58 @@
                                     <div class="d-flex justify-content-between align-items-center pt-1 border-top">
                                         <div class="d-flex gap-3">
                                             <!-- like -->
-                                            <a href="{% url 'post_details' post.id%}" class="text-decoration-none text-muted interaction-link">
+                                            <a href="{% url 'post_details' post.slug%}"
+                                                class="text-decoration-none text-muted interaction-link like-btn">
                                                 <i class="fa-solid fa-heart"></i>
                                                 <span class="ms-1">{{ post.likes.count }}</span>
                                             </a>
                                             <!-- comment -->
-                                            <a href="{% url 'post_details' post.id%}" class="text-decoration-none text-muted interaction-link">
+                                            <a href="{% url 'post_details' post.slug%}"
+                                                class="text-decoration-none text-muted interaction-link comment-btn">
                                                 <i class="fa-solid fa-comment"></i>
                                                 <span class="ms-1">{{ post.comments.count }}</span>
                                             </a>
 
                                             <!-- Views -->
-                                            <a href="{% url 'post_details' post.id%}" class="text-muted">
+                                            <a href="{% url 'post_details' post.slug%}" class="text-muted view-btn">
                                                 <i class="fa-solid fa-street-view"></i>
                                                 <span class="ms-1">{{ post.view_count }}</span>
                                             </a>
                                         </div>
 
                                         <div class="d-flex gap-4">
-                                            <a href="#" class="text-decoration-none text-muted interaction-link">
+                                            <a href="{% url 'post_details' post.slug%}" class="text-decoration-none text-muted interaction-link bookmark-btn">
                                                 <i class="fa-solid fa-bookmark"></i>
                                             </a>
                                             <div class="dropdown">
-                                                <a href="#" class="text-decoration-none text-muted interaction-link"
+                                                <a href="#" class="text-decoration-none text-muted interaction-link share-btn"
                                                     data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="fa-solid fa-share"></i>
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
                                                         <a class="dropdown-item copy-link" href="#"
-                                                        data-url="{{ request.build_absolute_uri }}{% url 'post_details' post.id %}">
-                                                        <i class="fa-solid fa-copy me-2"></i> Copy Link
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
+                                                            data-url="{{ request.build_absolute_uri }}{% url 'post_details' post.id %}">
+                                                            <i class="fa-solid fa-copy me-2"></i> Copy Link
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
                                                     <li>
                                                         <a class="dropdown-item"
-                                                        href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{% url 'post_details' post.id %}"
-                                                        target="_blank">
-                                                        <i class="fa-brands fa-facebook me-2"></i> Facebook
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item"
-                                                        href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}{% url 'post_details' post.id %}&text={{ post.title }}"
-                                                        target="_blank">
-                                                        <i class="fa-brands fa-twitter me-2"></i> Twitter
-                                                    </a>
-                                                </li>
+                                                            href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{% url 'post_details' post.id %}"
+                                                            target="_blank">
+                                                            <i class="fa-brands fa-facebook me-2"></i> Facebook
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}{% url 'post_details' post.id %}&text={{ post.title }}"
+                                                            target="_blank">
+                                                            <i class="fa-brands fa-twitter me-2"></i> Twitter
+                                                        </a>
+                                                    </li>
                                                     <li>
                                                         <a class="dropdown-item"
                                                             href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}{% url 'post_details' post.id %}"
@@ -220,7 +154,7 @@
                         <p class="text-muted">No posts available{% if selected_category %} in this category{% endif %}.
                         </p>
                     </div>
-                {% endfor %}
+                    {% endfor %}
 
                     <!-- pagination  -->
                     {% if is_paginated %}
@@ -252,10 +186,9 @@
                         </ul>
                     </nav>
                     {% endif %}
-                </div> 
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-{% endblock %}
+{% endblock%}

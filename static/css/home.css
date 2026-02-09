@@ -2,10 +2,10 @@
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.post-card:hover {
+/* .post-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-}
+} */
 
 .object-fit-cover {
     object-fit: cover;
@@ -16,8 +16,20 @@
     border-color: #0d6efd;
 }
 
-.interaction-link:hover {
-    color: #0d6efd !important;
+.like-btn:hover {
+    color: #e21414 !important;
+}
+.comment-btn:hover {
+    color: #170ec2 !important;
+}
+.view-btn:hover {
+    color: #09f1da !important;
+}
+.bookmark-btn:hover {
+    color: #2fed0d !important;
+}
+.share-btn:hover {
+    color: #09e9f0 !important;
 }
 
 .interaction-link:hover i {

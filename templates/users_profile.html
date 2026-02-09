@@ -2,17 +2,6 @@
 {%load static%}
 {% block content %}
 
-{% if messages %}
-<div class="container-fluid px-3 px-md-4 mt-3">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
 <div class="container-fluid px-3 px-md-4 mt-4">
     <div class="card mb-4 shadow-sm border-0">
         <div class="card-body p-3 p-md-4">
@@ -33,28 +22,14 @@
                 <div class="col-12 col-md">
                     <div class="profile-info">
                         <h5 class="mb-2">
-                            <span class="text-muted small d-inline">Username: </span>
-                            <span class="fw-semibold d-inline">{{ author.user.username }}</span>
-                        </h5>
-                        <h5 class="mb-2">
-                            <span class="text-muted small d-inline">Display Name: </span>
+                            <span class="text-muted small d-inline">Name: </span>
                             <span class="fw-semibold d-inline">{{ author.name }}</span>
-                        </h5>
-                        <h5 class="mb-2">
-                            <span class="text-muted small d-inline">Email: </span>
-                            <span class="fw-semibold d-inline">{{ author.email }}</span>
                         </h5>
                         <h5 class="mb-2">
                             <span class="text-muted  small d-inline">Bio: </span>
                             <span class="mb-0 d-inline">{{ author.bio|default:"No bio available" }}</span>
                         </h5>
                     </div>
-                </div>
-                <!-- edit button -->
-                <div class="col-12 col-md-auto text-center text-md-end mt-3 mt-md-0">
-                    <a class="btn btn-primary px-4" href="{% url 'edit_profile' %}">
-                        <i class="fa-solid fa-pen me-2"></i>Edit Profile
-                    </a>
                 </div>
             </div>
         </div>
@@ -68,11 +43,11 @@
             <div class="col-12">
                 <div class="header mb-2 p-1"
                     style="background-color: #f2f7f7;border-bottom: 2px solid #e0e0e0; padding: 15px 0;">
-                    <h3> My Posts <i class="badge bg-primary rounded-pill">{{data.count}}</i></h3>
+                    <h3> Posts <i class="badge bg-primary rounded-pill">{{data.count}}</i></h3>
                     <hr>
                 </div>
 
-                {% for post in data %}
+                {% for post in posts %}
                 <div class="card shadow-sm border-0 post-card" style="padding: 10px 0px; background-color: #f2f7f7;">
                     <div class="row g-0">
                         {% if post.post_image %}
@@ -104,15 +79,7 @@
                                                 </small>
                                             </div>
                                         </div>
-                                        <!-- edit & delete link  -->
-                                        <div class="d-flex gap-2 ms-auto ms-sm-0" style="height: fit-content;" >
-                                            <a href="{% url 'edit_post' post.id %}" class="btn btn-sm btn-outline-primary">
-                                                <i class="fa-solid fa-pen d-inline"></i>
-                                            </a>
-                                            <a href="{% url 'delete_post' post.id %}" class="btn btn-sm btn-outline-danger">
-                                                <i class="fa-solid fa-trash d-inline"></i>
-                                            </a>
-                                        </div>
+                                        
                                     </div>
                                     <!-- post content  -->
                                     <div class=" mb-2">

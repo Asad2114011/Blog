@@ -70,8 +70,8 @@
 
     .search-button {
       border: none;
-      background-color: #3ae46a;
-      color: white;
+
+      border: 1px solid black;
       border-radius: 16px;
       padding: 8px 12px;
       cursor: pointer;
@@ -79,9 +79,9 @@
       transition: background-color 0.3s ease;
     }
 
-    .cancel-search-button {
+    /* .cancel-search-button {
       display: none;
-    }
+    } */
 
     .search-button:hover {
       background-color: #1da7bd;
@@ -96,7 +96,6 @@
     .navbar .btn {
       font-size: 15px;
       padding: 6px 12px;
-      border: 1px solid rgb(49, 49, 49);
       border-radius: 16px;
       color: white;
     }
@@ -186,6 +185,12 @@
 
     .sidebar-link.active {
       background-color: #b3b0b5;
+      color: #232629;
+      border-right-color: #f48024;
+    }
+
+    .sidebar-link.active {
+      background-color: #b3b0b5;
       color: #0c0d0e;
       font-weight: bold;
       border-right-color: #f48024;
@@ -201,7 +206,7 @@
     .right-content {
       flex: 1;
       margin-left: 24px;
-      padding: 0 24px; 
+      padding: 0 24px;
       min-width: 0;
       display: flex;
       flex-direction: column;
@@ -220,15 +225,15 @@
     }
 
     /* footer  */
-    .full-footer{
+    .full-footer {
       margin-top: auto;
     }
+
     footer {
       background-color: hsl(210, 12%, 17%);
       width: 100%;
       box-sizing: border-box;
       color: white;
-      border-radius: 10px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
     }
@@ -268,18 +273,18 @@
     }
 
 
-    /* mobile screen  */
     @media (max-width: 768px) {
       .hamburger-menu {
         display: block;
       }
-      .divider{
+
+      .divider {
         display: none;
       }
+
       .left-sidebar {
         position: fixed;
         top: 0;
-        left: 0;
         height: 100%;
         width: 200px;
         background: white;
@@ -323,39 +328,30 @@
       .search-container {
         display: none;
       }
-      .divider{
+
+      .divider {
         display: none;
       }
+
       .search-container.active {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
+        justify-content: flex-start;
         position: fixed;
         top: 56px;
-        width:100%;
-        border-radius: 12px;
+        left: 0;
+        width: 100%;
         z-index: 1000;
-      }
-
-      .search-container.active .cancel-search-button {
-        display: block;
-        border: none;
-        border-radius: 10px;
-        background: #cd2a2a;
-        padding: 8px 12px;
-        font-size: 10px;
-        cursor: pointer;
-        transition: all 0.2s ease;
+        padding: 10px 15px;
       }
 
       .search-container.active .search-button {
         font-size: 10px;
-        border-radius: 10px;
+        border-radius: 5px;
       }
 
       .search-container.active .search-bar {
         font-size: 14px;
+        border-radius: 5px;
       }
 
 
@@ -377,8 +373,9 @@
         font-size: 12px;
         padding: 4px 8px;
       }
-      .footer-container{
-        justify-content: center;         
+
+      .footer-container {
+        justify-content: center;
         gap: 10px;
         text-align: center;
       }

@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="{% static 'css/auth.css'%}">
   <link rel="stylesheet" href="{% static 'css/home.css'%}">
 
-  <title>Asad Blog</title> 
+  <title>Asad Blog</title>
 </head>
 
 <body>
@@ -39,23 +39,21 @@
         </a>
         <a href="#" class="search-icon" id="searchIcon"><i class="fa-solid fa-magnifying-glass"></i></a>
 
-        <form class="search-container" id="searchForm" method="GET" action="{% url 'home' %}">
-          <input class="search-bar" type="search" name="q" placeholder="search...">
+        <form class="search-container" id="searchForm" method="GET" action="{% url 'search' %}">
+          <input class="search-bar" type="search" name="q" placeholder="Search  blogs, authors, categories, tags etc....." value="{{ query }}">
           <button class="search-button" type="submit">Search</button>
-          <button class="cancel-search-button" id="cancelBtn" type="button">Cancel</button>
+          <!-- <button class="cancel-search-button" id="cancelBtn" type="button">Cancel</button> -->
         </form>
       </div>
-
       <div class="ml-auto auth-btn">
         {% if request.user.is_authenticated %}
-        <a class="btn" style="background-color: rgb(74, 148, 89);" href="{% url 'profile' %}">Profile</a>|
-        <a class="btn" style="background-color: rgb(245, 56, 56);" href="{% url 'logout' %}">Logout</a>
+        <a class="btn btn-outline-primary" style="color: black;" href="{% url 'profile' %}">Profile</a>|
+        <a class="btn btn-outline-danger" style="color:black" href="{% url 'logout' %}">Logout</a>
         {% else %}
         <a class="btn" style="background-color: rgb(47, 170, 223);" href="{% url 'register' %}">Register</a>|
         <a class="btn" style="background-color: rgb(143, 124, 237);" href="{% url 'user_login' %}">Login</a>
         {% endif %}
       </div>
-
     </div>
   </nav>
 
@@ -82,25 +80,25 @@
 
         <div class="sidebar-section">
           <div class="sidebar-section-title">Public</div>
-          <a href="#" class="sidebar-link ">
+          <a href="4" class="sidebar-link ">
             <svg fill="currentColor" viewBox="0 0 18 18">
               <path d="M9 1a8 8 0 100 16A8 8 0 009 1zM8 15v-3H6v-2h2V8H6V6h3V4h2v2h1v2h-1v2h2v2h-2v3H8z" />
             </svg>
             Questions
           </a>
-          <a href="#" class="sidebar-link">
+          <a href="{% url 'all_categories' %}" class="sidebar-link">
             <svg fill="currentColor" viewBox="0 0 18 18">
               <path d="M15 2H3v12h12V2zM9 12H5v-1h4v1zm4-3H5V8h8v1zm0-3H5V5h8v1z" />
             </svg>
             Category
           </a>
-          <a href="#" class="sidebar-link">
+          <a href="{% url 'all_tags' %}" class="sidebar-link">
             <svg fill="currentColor" viewBox="0 0 18 18">
               <path d="M15 2H3v12h12V2zM9 12H5v-1h4v1zm4-3H5V8h8v1zm0-3H5V5h8v1z" />
             </svg>
             Tags
           </a>
-          <a href="#" class="sidebar-link">
+          <a href="{% url 'all_users' %}" class="sidebar-link">
             <svg fill="currentColor" viewBox="0 0 18 18">
               <path d="M9 1a8 8 0 100 16A8 8 0 009 1zm1 11H8v-2h2v2zm0-3H8V5h2v4z" />
             </svg>
@@ -117,7 +115,7 @@
             </svg>
             Profile
           </a>
-          <a href="#" class="sidebar-link">
+          <a href="{% url 'favourite_posts'%}" class="sidebar-link">
             <svg fill="currentColor" viewBox="0 0 18 18">
               <path d="M9 1l2.5 5.5L17 7.3l-4 4.2.9 5.5L9 14.5 4.1 17l.9-5.5-4-4.2 5.5-.8L9 1z" />
             </svg>
@@ -159,6 +157,7 @@
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
   <script src="{% static 'js/base.js' %}"></script>
+  <script src="{% static 'js/post.js' %}"></script>
 
 </body>
 

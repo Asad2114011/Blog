@@ -30,6 +30,12 @@ urlpatterns = [
     path('category/<catagory_slug>/', views.home, name='category_posts'),
     path('tinymce/', include('tinymce.urls')),
     path('tinymce/upload/', tinymce_upload, name='tinymce_upload'),
+    path('search/', views.search, name='search'),
+    path('favourite_posts/',views.favourites,name='favourite_posts'),
+    path('categories/', views.all_categories, name='all_categories'),
+    path('tags/', views.all_tags, name='all_tags'),
+    path('all_users/', views.all_authors, name='all_users'),
+    path('all_users/profile/<slug>', views.users_profile, name='users_profile'),
 ]
 
 if settings.DEBUG:
