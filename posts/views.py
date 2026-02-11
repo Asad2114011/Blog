@@ -12,20 +12,20 @@ from django.views.decorators.http import require_POST
 @login_required
 @require_POST
 def toggle_like(request,id):
-    post = models.Post.objects.get(id=id)
-    author = request.user.author_profile
-    
-    like = models.Like.objects.filter(post=post, user=author)
-    
+    post=models.Post.objects.get(id=id)
+    author=request.user.author_profile
+    like=models.Like.objects.filter(post=post,user=author)
     if like.exists():
         like.delete()
-        liked = False
+        liked=False
     else:
-        models.Like.objects.create(post=post, user=author)
-        liked = True
-    
-    return JsonResponse({'liked': liked,'like_count': post.likes.count()})
-
+        models.Like.objects.create(post=post,user=author)
+        liked=True
+    context={
+        'liked':liked,
+        'liked_count':post.likes.count()
+    }
+    return JsonResponse(context)
 
 @login_required
 @require_POST
@@ -42,24 +42,23 @@ def toggle_bookmark(request,id):
         bookmarked=True
     return JsonResponse({'bookmarked':bookmarked})
 
-
 @csrf_exempt
 def tinymce_upload(request):
-    if request.method == "POST" and request.FILES.get('file'):
-        file = request.FILES['file']
+    if request.method=="POST"and request.FILES.get('file'):
+        file=request.FILES['file']
         
-        upload_path = os.path.join(settings.MEDIA_ROOT, 'tinymce')
+        upload_path=os.path.join(settings.MEDIA_ROOT,'tinymce')
         os.makedirs(upload_path, exist_ok=True)
         
-        file_path = os.path.join(upload_path, file.name)
-        with open(file_path, 'wb+') as destination:
+        file_path=os.path.join(upload_path,file.name)
+        with open(file_path, 'wb+')as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
         
-        file_url = os.path.join(settings.MEDIA_URL, 'tinymce', file.name)
+        file_url=os.path.join(settings.MEDIA_URL,'tinymce',file.name)
         return JsonResponse({'location': file_url})
-    
-    return JsonResponse({'error': 'Upload failed'}, status=400)
+
+    return JsonResponse({'error':'Upload failed'},status=400)
 
 
 @login_required
@@ -76,10 +75,8 @@ def create_post(request):
         post_form=forms.PostForm()
     return render(request,'create_post.html',{'form':post_form})
 
-@login_required
 def post_details(request,slug):
     post=models.Post.objects.get(slug=slug)
-
     post.view_count+=1
     post.save(update_fields=['view_count'])
 
@@ -91,8 +88,13 @@ def post_details(request,slug):
         user_liked=post.likes.filter(user=request.user.author_profile).exists()
         user_commented=post.comments.filter(user=request.user.author_profile).exists()
         user_bookmarked=post.bookmarks.filter(user=request.user.author_profile).exists()
-        
-    return render(request,'post_details.html',{'post':post,'user_liked':user_liked,'user_commented':user_commented,'user_bookmarked':user_bookmarked})
+    context={
+        'post':post,
+        'user_liked':user_liked,
+        'user_commented':user_commented,
+        'user_bookmarked':user_bookmarked,
+    }   
+    return render(request,'post_details.html',context)
 
 @login_required
 def edit_post(request,id):

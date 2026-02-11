@@ -1,6 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
+const int N=2e5+5;
+map<int,pair<int,set<int>>>m;
+vector<int>v[N],dis(N,-1);
+vector<bool>vis(N,false);
+void bfs(int s){
+  queue<int>q;
+  q.push(s);
+  vis[s]=true;
+  dis[s]=0;
+  while(!q.empty()){
+    int cur=q.front();
+    q.pop();
+    for(int i:v[cur]){
+       if(!vis[i]){
+        q.push(i);
+        vis[i]=true;
+        dis[i]=dis[cur]+1;
+        m[dis[i]].first++;
+        m[dis[i]].second.insert(cur);
+       }
+    }
+  }
+  return;
+}
 int main()
 {
     ios::sync_with_stdio(0);
@@ -9,20 +33,30 @@ int main()
     cin >> t;
     while (t--)
     {
-      ll n,m,k;
-      cin>>n>>m>>k;
-      ll x=0,y=0;
-      if(k-1>n-k)k=n-k+1;
-
-      while(true){
-        ll cur_x=x+y+max(x+1,y);
-        if(x<k-1&&cur_x<=m)x++;
-        
-        ll cur_y=x+y+max(x,y+1); 
-        if(y<n-k&&cur_y<=m)y++;
-        else break;
+      int n;
+      cin>>n;
+      for(int i=1;i<=n;i++){
+        vis[i]=false;
+        dis[i]=-1;
+        v[i].clear();
       }
-      cout<<x+y+1<<'\n';
+      m.clear();
+      n--;
+      while(n--){
+        int l,r;
+        cin>>l>>r;
+        v[l].push_back(r);
+        v[r].push_back(l);
+      }
+      bfs(1);
+      int mx=-1;
+      for(auto i:m){
+        if(i.second.first>=mx){
+          mx=i.second.first;
+          if(i.second.second.size()==1)mx++;
+        }
+      }
+      cout<<mx<<'\n';
       
     }
     return 0;

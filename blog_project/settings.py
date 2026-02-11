@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'author',
     'catagories',
     'posts',
-    'question',
     'crispy_forms',
     'crispy_bootstrap5',
     'tinymce',

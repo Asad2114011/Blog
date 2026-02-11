@@ -49,7 +49,7 @@
                         </a>
 
                         <!-- Views -->
-                        <a href="{% url 'post_details' post.id %}"
+                        <a href="{% url 'post_details' post.slug %}"
                             class="text-decoration-none text-muted interaction-link view-btn">
                             <i class="fa-solid fa-street-view"></i>
                             <span class="ms-1">{{ post.view_count }}</span>
@@ -128,7 +128,7 @@
                         </form>
                     </div>
                     {% else %}
-                    <p class="text-muted">Please <a href="{% url 'login' %}">login</a> to comment.</p>
+                    <p class="text-muted">Please <a href="#">login</a> to comment.</p>
                     {% endif %}
 
                     <!-- Comments List -->
