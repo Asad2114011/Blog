@@ -39,7 +39,8 @@
                             <span class="ms-1 like-count">{{ post.likes.count }}</span>
                         </a>
                         <!-- comment -->
-                        <a href="#comments-section" class="text-decoration-none text-muted interaction-link comment-btn">
+                        <a href="#comments-section"
+                            class="text-decoration-none text-muted interaction-link comment-btn">
                             {% if user_commented %}
                             <i class="fa-solid fa-comment"></i>
                             {% else %}
@@ -58,7 +59,7 @@
 
                     <div class="d-flex gap-4">
                         <a href="#" class="text-decoration-none text-muted interaction-link bookmark-btn"
-                            data-post-id="{{post.id}}" >
+                            data-post-id="{{post.id}}">
                             {% if user.is_authenticated and user_bookmarked %}
                             <i class="fa-solid fa-bookmark"></i>
                             {%else%}
@@ -112,142 +113,30 @@
                         {{post.content|safe}}</h5>
                 </div>
                 <!-- Comments Section -->
-                <div class="comments-section mt-5" id="comments-section">
-                    <h5 class="mb-4">Comments ({{ post.comments.count }})</h5>
-
-                    <!-- Comment Form -->
-                    {% if user.is_authenticated %}
-                    <div class="comment-form mb-4">
-                        <form method="POST" action="{% url 'add_comment' post.id %}">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <textarea class="form-control" name="content" rows="3" placeholder="Write a comment..."
-                                    required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Post Comment</button>
-                        </form>
-                    </div>
-                    {% else %}
-                    <p class="text-muted">Please <a href="#">login</a> to comment.</p>
-                    {% endif %}
-
-                    <!-- Comments List -->
-                    <div class="comments-list mt-4">
-                        {% for comment in post.comments.all %}
-                        {% if not comment.parent %} <!-- Only show parent comments -->
-                        <div class="comment mb-3 p-3 border rounded">
-                            <div class="d-flex align-items-start">
-                                {% if comment.user.profile_image %}
-                                <img src="{{ comment.user.profile_image.url }}" class="rounded-circle me-2"
-                                    alt="{{ comment.user.name }}" width="40" height="40" style="object-fit: cover;">
-                                {% else %}
-                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2"
-                                    style="width: 40px; height: 40px; font-weight: bold;">
-                                    {{ comment.user.name|first|upper }}
-                                </div>
-                                {% endif %}
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between">
-                                        <h6 class="mb-0">{{ comment.user.name }}</h6>
-                                        <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
-                                    </div>
-
-                                    <!-- Comment Content (with edit form toggle) -->
-                                    <div class="comment-content-{{ comment.id }}">
-                                        <p class="mb-0 mt-2">{{ comment.content }}</p>
-                                    </div>
-
-                                    <!-- Edit Form (hidden by default) -->
-                                    <div class="edit-form-{{ comment.id }}" style="display: none;">
-                                        <form method="POST" action="{% url 'edit_comment' comment.id %}">
-                                            {% csrf_token %}
-                                            <textarea class="form-control mb-2" name="content"
-                                                rows="2">{{ comment.content }}</textarea>
-                                            <button type="submit" class="btn btn-sm btn-primary">Save</button>
-                                            <button type="button" class="btn btn-sm btn-secondary cancel-edit"
-                                                data-comment-id="{{ comment.id }}">Cancel</button>
-                                        </form>
-                                    </div>
-                                    <!-- Action Buttons -->
-                                    <div class="comment-actions mt-2">
-                                        <button class="btn btn-link btn-sm text-muted p-0 me-3 reply-btn"
-                                            data-comment-id="{{ comment.id }}">
-                                            <i class="fa-solid fa-reply"></i> Reply
-                                        </button>
-
-                                        {% if user.is_authenticated and comment.user == user.author_profile %}
-                                        <button class="btn btn-link btn-sm text-muted p-0 me-3 edit-btn"
-                                            data-comment-id="{{ comment.id }}">
-                                            <i class="fa-solid fa-edit"></i> Edit
-                                        </button>
-                                        <a href="{% url 'delete_comment' comment.id %}"
-                                            class="btn btn-link btn-sm text-danger p-0"
-                                            onclick="return confirm('Delete this comment?')">
-                                            <i class="fa-solid fa-trash"></i> Delete
-                                        </a>
-                                        {% endif %}
-                                    </div>
-
-                                    <!-- Reply Form (hidden by default) -->
-                                    <div class="reply-form-{{ comment.id }} mt-3" style="display: none;">
-                                        <form method="POST" action="{% url 'add_reply' comment.id %}">
-                                            {% csrf_token %}
-                                            <textarea class="form-control mb-2" name="content" rows="2"
-                                                placeholder="Write a reply..." required></textarea>
-                                            <button type="submit" class="btn btn-sm btn-primary">Reply</button>
-                                            <button type="button" class="btn btn-sm btn-secondary cancel-reply"
-                                                data-comment-id="{{ comment.id }}">Cancel</button>
-                                        </form>
-                                    </div>
-
-                                    <!-- Replies -->
-                                    {% if comment.replies.all %}
-                                    <div class="replies ms-5 mt-3">
-                                        {% for reply in comment.replies.all %}
-                                        <div class="reply mb-2 p-2 border-start border-3">
-                                            <div class="d-flex align-items-start">
-                                                {% if reply.user.profile_image %}
-                                                <img src="{{ reply.user.profile_image.url }}"
-                                                    class="rounded-circle me-2" alt="{{ reply.user.name }}" width="30"
-                                                    height="30" style="object-fit: cover;">
-                                                {% else %}
-                                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2"
-                                                    style="width: 30px; height: 30px; font-size: 12px; font-weight: bold;">
-                                                    {{ reply.user.name|first|upper }}
-                                                </div>
-                                                {% endif %}
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex justify-content-between">
-                                                        <h6 class="mb-0" style="font-size: 14px;">{{ reply.user.name }}
-                                                        </h6>
-                                                        <small class="text-muted" style="font-size: 12px;">{{reply.created_at|timesince }} ago</small>
-                                                    </div>
-                                                    <p class="mb-0 mt-1" style="font-size: 14px;">{{ reply.content }}
-                                                    </p>
-
-                                                    {% if user.is_authenticated and reply.user == user.author_profile %}
-                                                    <a href="{% url 'delete_comment' reply.id %}"
-                                                        class="btn btn-link btn-sm text-danger p-0 mt-1"
-                                                        style="font-size: 12px;"
-                                                        onclick="return confirm('Delete this reply?')">
-                                                        <i class="fa-solid fa-trash"></i> Delete
-                                                    </a>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% endfor %}
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </div>
+                {% if user.is_authenticated %}
+                <div class="comment-form mb-4">
+                    <form class="add-comment-form" data-post-id="{{ post.id }}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <textarea class="form-control" name="content" rows="3" placeholder="Write a comment..."
+                                required></textarea>
                         </div>
-                        {% endif %}
-                        {% empty %}
-                        <p class="text-muted">No comments yet. Be the first to comment!</p>
-                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Post Comment</button>
+                    </form>
+                    <div class="comments-section mt-5" id="comments-section">
+                        <h5 class="mb-4">Comments ({{ post.comments.count }})</h5>
+                        <!-- Comments List (Top-level only) -->
+                        <div class="comments-list mt-4">
+                            {% for comment in top_level_comments %}
+                            {% include "comment_tree.html" with comment=comment %}
+                            {% empty %}
+                            <p class="text-muted">No comments yet. Be the first to comment!</p>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
+                {% endif %}
+
             </div>
         </div>
     </div>

@@ -42,25 +42,6 @@ def toggle_bookmark(request,id):
         bookmarked=True
     return JsonResponse({'bookmarked':bookmarked})
 
-@csrf_exempt
-def tinymce_upload(request):
-    if request.method=="POST"and request.FILES.get('file'):
-        file=request.FILES['file']
-        
-        upload_path=os.path.join(settings.MEDIA_ROOT,'tinymce')
-        os.makedirs(upload_path, exist_ok=True)
-        
-        file_path=os.path.join(upload_path,file.name)
-        with open(file_path, 'wb+')as destination:
-            for chunk in file.chunks():
-                destination.write(chunk)
-        
-        file_url=os.path.join(settings.MEDIA_URL,'tinymce',file.name)
-        return JsonResponse({'location': file_url})
-
-    return JsonResponse({'error':'Upload failed'},status=400)
-
-
 @login_required
 def create_post(request):
     if request.method=='POST':
@@ -88,11 +69,14 @@ def post_details(request,slug):
         user_liked=post.likes.filter(user=request.user.author_profile).exists()
         user_commented=post.comments.filter(user=request.user.author_profile).exists()
         user_bookmarked=post.bookmarks.filter(user=request.user.author_profile).exists()
+
+    top_level_comments=post.comments.filter(parent=None).order_by('-created_at')
     context={
         'post':post,
         'user_liked':user_liked,
         'user_commented':user_commented,
         'user_bookmarked':user_bookmarked,
+        'top_level_comments':top_level_comments,
     }   
     return render(request,'post_details.html',context)
 
@@ -116,51 +100,69 @@ def delete_post(request,id):
      return redirect('home')
 
 @login_required
-def add_comment(request, post_id):
+def add_comment(request,id):
     if request.method == 'POST':
-        post = models.Post.objects.get(id=post_id)
+        post = models.Post.objects.get(id=id)
         content = request.POST.get('content')
-        
         models.Comment.objects.create(
             post=post,
             user=request.user.author_profile,
-            content=content
+            content=content,
         )
-    
-    return redirect('post_details', slug=post.slug)
+        return JsonResponse({'success':True})
+    return JsonResponse({'success':False})
 
 @login_required
-def add_reply(request, comment_id):
-    if request.method == 'POST':
-        parent_comment = models.Comment.objects.get(id=comment_id)
-        content = request.POST.get('content')
-        
+def add_reply(request,id):
+    if request.method=='POST':
+        parent_comment=models.Comment.objects.get(id=id)
+        content=request.POST.get('content')
         models.Comment.objects.create(
             post=parent_comment.post,
             user=request.user.author_profile,
             content=content,
             parent=parent_comment
         )
-    
-    return redirect('post_details', slug=parent_comment.post.slug)
+        return JsonResponse({'success':True})
+    return JsonResponse({'success':False})
 
 @login_required
-def edit_comment(request, comment_id):
-    comment = models.Comment.objects.get(id=comment_id)
+def edit_comment(request, id):
+    comment = models.Comment.objects.get(id=id)
     
     if request.user.author_profile == comment.user:
         if request.method == 'POST':
             comment.content = request.POST.get('content')
             comment.save()
+            return JsonResponse({'success':True})
     
-    return redirect('post_details', slug=comment.post.slug)
+    return JsonResponse({'success':False})
 
 @login_required
-def delete_comment(request, comment_id):
-    comment = models.Comment.objects.get(id=comment_id)
-    post_slug = comment.post.slug
+def delete_comment(request, id):
+    comment = models.Comment.objects.get(id=id)
     
     if request.user.author_profile == comment.user:
-        comment.delete()
+        if request.method=='POST':
+           comment.delete()
+           return JsonResponse({'success':True})
     
-    return redirect('post_details', slug=post_slug)
+    return JsonResponse({'success':False})
+
+@csrf_exempt
+def tinymce_upload(request):
+    if request.method=="POST"and request.FILES.get('file'):
+        file=request.FILES['file']
+        
+        upload_path=os.path.join(settings.MEDIA_ROOT,'tinymce')
+        os.makedirs(upload_path, exist_ok=True)
+        
+        file_path=os.path.join(upload_path,file.name)
+        with open(file_path, 'wb+')as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+        
+        file_url=os.path.join(settings.MEDIA_URL,'tinymce',file.name)
+        return JsonResponse({'location': file_url})
+
+    return JsonResponse({'error':'Upload failed'},status=400)

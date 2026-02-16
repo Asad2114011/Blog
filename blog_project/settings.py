@@ -49,7 +49,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': 'auto',
     'plugins': 'image link media lists',
     'toolbar': 'undo redo | bold italic | alignleft aligncenter alignright | image media | bullist numlist',
-    'images_upload_url': '/tinymce/upload/',  # Image upload endpoint
+    'images_upload_url': '/tinymce/upload/',
     'automatic_uploads': True,
 }
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

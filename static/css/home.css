@@ -19,6 +19,9 @@
 .like-btn:hover {
     color: #e21414 !important;
 }
+.like-home-btn:hover {
+    color: #e21414 !important;
+}
 .comment-btn:hover {
     color: #170ec2 !important;
 }
@@ -26,6 +29,9 @@
     color: #09f1da !important;
 }
 .bookmark-btn:hover {
+    color: #2fed0d !important;
+}
+.bookmark-home-btn:hover {
     color: #2fed0d !important;
 }
 .share-btn:hover {

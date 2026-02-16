@@ -16,20 +16,14 @@ class registrationForm(UserCreationForm):
 
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.fields['username'].widget.attrs.update({
-            'placeholder': 'Enter your username'
-        })
-        self.fields['password1'].widget.attrs.update({
-            'placeholder': 'Enter your password'
-        })
-        self.fields['password2'].widget.attrs.update({
-            'placeholder': 'Confirm your password'
-        })
+        self.fields['username'].widget.attrs.update({'placeholder':'Enter your username'})
+        self.fields['password1'].widget.attrs.update({'placeholder':'Enter your password'})
+        self.fields['password2'].widget.attrs.update({'placeholder':'Confirm your password'})
         
-    field_order = ['username', 'email', 'display_name', 'bio', 'profile_image', 'password1', 'password2']
+    field_order=['username','email','display_name','bio','profile_image','password1','password2']
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email=self.cleaned_data.get('email')
         if not email:
             raise forms.ValidationError("Email is required.")
         if User.objects.filter(email=email).exists():
@@ -65,20 +59,19 @@ class AuthorUpdateForm(forms.ModelForm):
     class Meta:
         model=Author
         fields=['name','email','bio','profile_image']
-        labels = {
+        labels={
             'name':'Display Name'
         }
         widgets={
             'bio':forms.Textarea(attrs={'row':4})
         }
         
-    def save(self, commit=True):
+    def save(self,commit=True):
         author = super().save(commit=False)
         
         if commit:
             author.save()
-            author.user.email = author.email
+            author.user.email=author.email
             author.user.save()
-        
         return author
    

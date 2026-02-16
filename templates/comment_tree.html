@@ -1,0 +1,78 @@
+<!-- comment_tree.html -->
+<div class="comment mb-3 p-3 border rounded {% if comment.parent %}ms-4{% endif %}">
+    <div class="d-flex align-items-start">
+        {% if comment.user.profile_image %}
+        <img src="{{ comment.user.profile_image.url }}" class="rounded-circle me-2" alt="{{ comment.user.name }}"
+            width="40" height="40" style="object-fit: cover;">
+        {% else %}
+        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-2"
+            style="width: 40px; height: 40px; font-weight: bold;">
+            {{ comment.user.name|first|upper }}
+        </div>
+        {% endif %}
+        <div class="flex-grow-1">
+            <div class="d-flex justify-content-between">
+                <h6 class="mb-0">{{ comment.user.name }}</h6>
+                <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+            </div>
+
+            <!-- Comment Content -->
+            <div class="comment-content-{{ comment.id }}">
+                <p class="mb-0 mt-2">{{ comment.content }}</p>
+            </div>
+
+            <!-- Edit Form -->
+            <div class="edit-form-{{ comment.id }}" style="display: none;">
+                <form class="edit-comment-form" data-comment-id="{{ comment.id }}">
+                    {% csrf_token %}
+                    <textarea class="form-control mb-2" name="content" rows="2">{{ comment.content }}</textarea>
+                    <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                    <button type="button" class="btn btn-sm btn-secondary cancel-edit"
+                        data-comment-id="{{ comment.id }}">Cancel</button>
+                </form>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="comment-actions mt-2">
+                {% if user.is_authenticated %}
+                <button class="btn btn-link btn-sm text-muted p-0 me-3 reply-btn text-decoration-none"
+                    data-comment-id="{{ comment.id }}">
+                    <i class="fa-solid fa-reply"></i> Reply
+                </button>
+                {% endif %}
+
+                {% if user.is_authenticated and comment.user == user.author_profile %}
+                <button class="btn btn-link btn-sm text-muted p-0 me-3 edit-btn text-decoration-none"
+                    data-comment-id="{{ comment.id }}">
+                    <i class="fa-solid fa-edit"></i> Edit
+                </button>
+                <button href="#" class="btn btn-link btn-sm text-danger p-0 text-decoration-none delete-comment"
+                    data-comment-id="{{ comment.id }}">
+                    <i class="fa-solid fa-trash"></i> Delete
+                </button>
+                {% endif %}
+            </div>
+
+            <!-- Reply Form -->
+            <div class="reply-form-{{ comment.id }} mt-3" style="display: none;">
+                <form class="add-reply-form" data-comment-id="{{ comment.id }}">
+                    {% csrf_token %}
+                    <textarea class="form-control mb-2" name="content" rows="2" placeholder="Write a reply..."
+                        required></textarea>
+                    <button type="submit" class="btn btn-sm btn-primary">Reply</button>
+                    <button type="button" class="btn btn-sm btn-secondary cancel-reply"
+                        data-comment-id="{{ comment.id }}">Cancel</button>
+                </form>
+            </div>
+
+            <!-- Nested Replies (RECURSIVE) -->
+            {% if comment.replies.all %}
+            <div class="replies mt-3">
+                {% for reply in comment.replies.all %}
+                {% include "comment_tree.html" with comment=reply %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
