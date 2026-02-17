@@ -1,7 +1,7 @@
 from django import forms
-from .models import catagory
+from .models import Tag
 
-class catagoryForm(forms.ModelForm):
+class tagForm(forms.ModelForm):
     class Meta:
-        model=catagory
-        fields='__all__'
+        model=Tag
+        fields=['name']

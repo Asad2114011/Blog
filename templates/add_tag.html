@@ -4,29 +4,21 @@
 <div class="login-container">
     <div class="login-card">
         <div class="login-header">
-            <h2>Create New Post</h2>
-            <p>Share your thoughts with the world</p>
+            <h2>Create a new tag</h2>
         </div>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.media }} 
             {{form|crispy}}
-            <div class="mb-3">
-                <small class="text-muted">
-                    Cant find your tag?
-                    <a href="{% url 'add_tag' %}"  class="fw-bold text-decoration-none"> Create a new tag</a>
-                </small>
-            </div>
             <div class="d-grid gap-2 mt-4">
                 <button type="submit" class="btn btn-primary btn-lg">
-                    Publish Post
+                    submit
                 </button>
             </div>
         </form>
         <div class="login-footer">
             <p class="text-center">
-            Want to see your all Posts ?
-                <a href="{% url 'profile' %}" class="text-decoration-none fw-bold">Profile</a>
+            Want to back in PostForm page ?
+                <a href="{% url 'create_post' %}" class="text-decoration-none fw-bold">PostForm</a>
             </p>
         </div>
     </div>

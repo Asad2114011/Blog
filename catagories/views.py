@@ -1,12 +1,14 @@
 from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
 from .import forms
 # Create your views here.
-def add_catagory(request):
+@login_required
+def add_tag(request):
     if request.method=='POST':
-        catagory_form=forms.catagoryForm(request.POST)
-        if catagory_form.is_valid():
-            catagory_form.save()
-            return redirect('add_catagory')
+        tag_form=forms.tagForm(request.POST)
+        if tag_form.is_valid():
+            tag_form.save()
+            return redirect('add_tag')
     else:
-        catagory_form=forms.catagoryForm()
-    return render(request,'add_catagory.html',{'form':catagory_form})
+        tag_form=forms.tagForm()
+    return render(request,'add_tag.html',{'form':tag_form})

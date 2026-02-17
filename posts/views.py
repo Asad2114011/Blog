@@ -2,12 +2,12 @@ from django.shortcuts import render,redirect
 from .import forms
 from .import models
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import os
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 @login_required
 @require_POST
@@ -23,7 +23,7 @@ def toggle_like(request,id):
         liked=True
     context={
         'liked':liked,
-        'liked_count':post.likes.count()
+        'like_count':post.likes.count()
     }
     return JsonResponse(context)
 
@@ -151,7 +151,7 @@ def delete_comment(request, id):
 
 @csrf_exempt
 def tinymce_upload(request):
-    if request.method=="POST"and request.FILES.get('file'):
+    if request.method=="POST" and request.FILES.get('file'):
         file=request.FILES['file']
         
         upload_path=os.path.join(settings.MEDIA_ROOT,'tinymce')
