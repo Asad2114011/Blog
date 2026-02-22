@@ -18,7 +18,15 @@
 
   <title>Asad Blog</title>
 </head>
-
+<!-- toast container  -->
+ <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 999;">
+  <div id="liveToast" class="toast align-items-center text-white border-0 " role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="toastMessage"></div>
+      <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+ </div>
 <body>
   <nav class="navbar">
     <div class="container d-flex align-items-center">
@@ -46,10 +54,10 @@
           <!-- <button class="cancel-search-button" id="cancelBtn" type="button">Cancel</button> -->
         </form>
       </div>
-      <div class="ml-auto auth-btn">
+      <div class="ml-auto auth-btn ms-3">
         {% if request.user.is_authenticated %}
-        <a class="btn btn-outline-primary" style="color: black;" href="{% url 'profile' %}">Profile</a>|
-        <a class="btn btn-outline-danger" style="color:black" href="{% url 'logout' %}">Logout</a>
+        <a class="auth-link" style="color: rgb(10, 25, 236); font-size: large; " href="{% url 'profile' %}">{{request.user.username}}</a>|
+        <a class="auth-link" style="color:rgb(205, 79, 79); font-size: large; " href="{% url 'logout' %}">Logout</a>
         {% else %}
         <a class="btn" style="background-color: rgb(47, 170, 223);" href="{% url 'register' %}">Register</a>|
         <a class="btn" style="background-color: rgb(143, 124, 237);" href="{% url 'user_login' %}">Login</a>
@@ -138,11 +146,7 @@
                   Join the community and explore blogs by everyone!</p>
             </div>
 
-            <div class="footer-contact" style="display: flex; flex-direction: column; justify-content: center;">
-              <!-- <p class="mb-3" style="font-size: large; text-align: center; color: white; font-weight: bold;">
-                Contact
-              </p> -->
-
+            <div class="footer-contact" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
               <!-- message input  -->
                <form method="POST" action="{% url 'contact' %}">
                 {% csrf_token %}
@@ -160,11 +164,6 @@
                 <a href="https://asad-portfolio.com" target="_blank"
                   style="color: #adb5bd;text-decoration:none;">asad-portfolio.com</a>
               </p>
-              <!-- <p style="color: #adb5bd; font-size: 14px;">
-                <i class="fa-solid fa-envelope me-2" style="color:#0d6efd;"></i>
-                <a href="mailto:asad2114011@gmail.com"
-                  style="color: #adb5bd;text-decoration:none;">asad2114011@gmail.com</a>
-              </p> -->
             </div>
           </div>
         </footer>

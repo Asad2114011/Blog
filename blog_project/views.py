@@ -7,6 +7,7 @@ from posts.models import Post,Bookmark
 from author.models import Author
 from catagories.models import catagory, Tag
 from django.contrib.auth.decorators import login_required 
+import os
 
 def home(request, catagory_slug=None):
     data=Post.objects.select_related('author','catagory').prefetch_related('tags','likes','comments')
@@ -19,6 +20,12 @@ def home(request, catagory_slug=None):
     paginator=Paginator(data, 5)
     page_num=request.GET.get('page')
     page_obj=paginator.get_page(page_num)
+    current_page=page_obj.number
+    total=page_obj.paginator.num_pages
+    start=max(current_page-1,1)
+    end=min(start+3,total)
+    start=max(end-3,1)
+    page_range=range(start,end+1)
     
     catagories=catagory.objects.all()
     all_posts_count=Post.objects.count()
@@ -31,6 +38,7 @@ def home(request, catagory_slug=None):
     context={
         'data':page_obj,
         'page_obj':page_obj,
+        'page_range':page_range,
         'catagory':catagories,
         'selected_category':selected_category,
         'trending_posts':trending_posts,
@@ -64,8 +72,26 @@ def search(request):
     tags=[]
 
     if query:
-        posts=Post.objects.filter(Q(title__icontains=query)|Q(content__icontains=query)).distinct()
-        authors=Author.objects.filter(Q(name__icontains=query)|Q(bio__icontains=query)).distinct()
+        if os.environ.get('DATABASE_URL'):
+            from django.contrib.postgres.search import SearchVector,SearchQuery,SearchRank
+
+            search_query=SearchQuery(query)
+            post_vector=SearchVector('title',weight='A')+SearchVector('content',weight='B')
+            posts=(
+                Post.objects.annotate(rank=SearchRank(post_vector,search_query))
+                .filter(rank__gte=0.1)
+                .order_by('-rank')
+            )
+            author_vector=SearchVector('name',weight='A')+SearchVector('bio',weight='B')
+            authors=(
+                Author.objects.annotate(rank=SearchRank(author_vector,search_query))
+                .filter(rank__gte=0.1)
+                .order_by('-rank')
+            )
+        else:
+            posts=Post.objects.filter(Q(title__icontains=query)|Q(content__icontains=query)).distinct()
+            authors=Author.objects.filter(Q(name__icontains=query)|Q(bio__icontains=query)).distinct()
+            
         categories=catagory.objects.filter(name__icontains=query)
         tags=Tag.objects.filter(name__icontains=query)
         
@@ -75,7 +101,6 @@ def search(request):
     
     context = {
         'query': query,
-        'posts': page_obj,
         'authors': authors,
         'categories': categories,
         'tags': tags,

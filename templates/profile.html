@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{%load static%}
+{% load static %}
 {% block content %}
 
 {% if messages %}
@@ -105,11 +105,12 @@
                                             </div>
                                         </div>
                                         <!-- edit & delete link  -->
-                                        <div class="d-flex gap-2 ms-auto ms-sm-0" style="height: fit-content;" >
-                                            <a href="{% url 'edit_post' post.id %}" class="btn btn-sm btn-outline-primary">
+                                        <div class="d-flex gap-2 ms-auto ms-sm-0" style="height: fit-content;">
+                                            <a href="{% url 'edit_post' post.id %}"
+                                                class="btn btn-sm btn-outline-primary">
                                                 <i class="fa-solid fa-pen d-inline"></i>
                                             </a>
-                                            <a href="{% url 'delete_post' post.id %}" class="btn btn-sm btn-outline-danger">
+                                            <a type="button" href="#" class="btn btn-sm btn-outline-danger delete-post-btn" data-post-id="{{post.id}}">
                                                 <i class="fa-solid fa-trash d-inline"></i>
                                             </a>
                                         </div>
@@ -117,7 +118,8 @@
                                     <!-- post content  -->
                                     <div class=" mb-2">
                                         <div class="d-flex align-items-center justify-content-between gap-1 ">
-                                            <a href="{% url 'post_details' post.id %}" class="text-decoration-none text-dark card-title "
+                                            <a href="{% url 'post_details' post.slug %}"
+                                                class="text-decoration-none text-dark card-title "
                                                 style="font-size: 23px; font-weight: bold;">
                                                 {{ post.title }}
                                             </a>
@@ -142,25 +144,28 @@
                                     <div class="d-flex justify-content-between align-items-center pt-1 border-top">
                                         <div class="d-flex gap-3">
                                             <!-- like -->
-                                            <a href="{% url 'post_details' post.id%}" class="text-decoration-none text-muted interaction-link">
+                                            <a href="{% url 'post_details' post.slug%}"
+                                                class="text-decoration-none text-muted like-home-btn">
                                                 <i class="fa-solid fa-heart"></i>
                                                 <span class="ms-1">{{ post.likes.count }}</span>
                                             </a>
                                             <!-- comment -->
-                                            <a href="{% url 'post_details' post.id%}" class="text-decoration-none text-muted interaction-link">
+                                            <a href="{% url 'post_details' post.slug%}"
+                                                class="text-decoration-none text-muted comment-btn">
                                                 <i class="fa-solid fa-comment"></i>
                                                 <span class="ms-1">{{ post.comments.count }}</span>
                                             </a>
-
-                                            <!-- Views -->
-                                            <a href="{% url 'post_details' post.id%}" class="text-muted">
+                                            <!-- views -->
+                                            <a href="{% url 'post_details' post.slug%}"
+                                                class="text-muted text-decoration-none view-btn">
                                                 <i class="fa-solid fa-street-view"></i>
                                                 <span class="ms-1">{{ post.view_count }}</span>
                                             </a>
                                         </div>
 
                                         <div class="d-flex gap-4">
-                                            <a href="#" class="text-decoration-none text-muted interaction-link">
+                                            <a href="{% url 'post_details' post.slug %}"
+                                                class="text-decoration-none bookmark-home-btn text-muted interaction-link">
                                                 <i class="fa-solid fa-bookmark"></i>
                                             </a>
                                             <div class="dropdown">
@@ -171,27 +176,27 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
                                                         <a class="dropdown-item copy-link" href="#"
-                                                        data-url="{{ request.build_absolute_uri }}{% url 'post_details' post.id %}">
-                                                        <i class="fa-solid fa-copy me-2"></i> Copy Link
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <hr class="dropdown-divider">
-                                                </li>
+                                                            data-url="{{ request.build_absolute_uri }}{% url 'post_details' post.id %}">
+                                                            <i class="fa-solid fa-copy me-2"></i> Copy Link
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
                                                     <li>
                                                         <a class="dropdown-item"
-                                                        href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{% url 'post_details' post.id %}"
-                                                        target="_blank">
-                                                        <i class="fa-brands fa-facebook me-2"></i> Facebook
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item"
-                                                        href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}{% url 'post_details' post.id %}&text={{ post.title }}"
-                                                        target="_blank">
-                                                        <i class="fa-brands fa-twitter me-2"></i> Twitter
-                                                    </a>
-                                                </li>
+                                                            href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}{% url 'post_details' post.id %}"
+                                                            target="_blank">
+                                                            <i class="fa-brands fa-facebook me-2"></i> Facebook
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}{% url 'post_details' post.id %}&text={{ post.title }}"
+                                                            target="_blank">
+                                                            <i class="fa-brands fa-twitter me-2"></i> Twitter
+                                                        </a>
+                                                    </li>
                                                     <li>
                                                         <a class="dropdown-item"
                                                             href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}{% url 'post_details' post.id %}"
@@ -220,7 +225,7 @@
                         <p class="text-muted">No posts available{% if selected_category %} in this category{% endif %}.
                         </p>
                     </div>
-                {% endfor %}
+                    {% endfor %}
 
                     <!-- pagination  -->
                     {% if is_paginated %}
@@ -252,10 +257,9 @@
                         </ul>
                     </nav>
                     {% endif %}
-                </div> 
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

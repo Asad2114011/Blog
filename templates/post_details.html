@@ -29,28 +29,27 @@
                 <div class="d-flex justify-content-between align-items-center pt-2 pb-2 mb-3 border-top border-bottom">
                     <div class="d-flex gap-3">
                         <!-- like -->
-                        <a href="#" class="text-decoration-none text-muted interaction-link like-btn"
+                        <a href="#" class="text-decoration-none text-muted interaction-link like-btn" title="Like"
                             data-post-id="{{ post.id }}">
                             {% if user_liked %}
-                            <i class="fa-solid fa-heart"></i>
+                            <i class="fa-solid fa-heart "></i>
                             {% else %}
                             <i class="fa-regular fa-heart"></i>
                             {% endif %}
                             <span class="ms-1 like-count">{{ post.likes.count }}</span>
                         </a>
                         <!-- comment -->
-                        <a href="#comments-section"
+                        <a href="#comments-section" title="Comment"
                             class="text-decoration-none text-muted interaction-link comment-btn">
                             {% if user_commented %}
-                            <i class="fa-solid fa-comment"></i>
+                            <i class="fa-solid fa-comment" ></i>
                             {% else %}
                             <i class="fa-regular fa-comment"></i>
                             {% endif %}
                             <span class="ms-1">{{ post.comments.count }}</span>
                         </a>
-
-                        <!-- Views -->
-                        <a href="{% url 'post_details' post.slug %}"
+                        <!-- views -->
+                        <a href="{% url 'post_details' post.slug %}" title="views"
                             class="text-decoration-none text-muted interaction-link view-btn">
                             <i class="fa-solid fa-street-view"></i>
                             <span class="ms-1">{{ post.view_count }}</span>
@@ -58,7 +57,7 @@
                     </div>
 
                     <div class="d-flex gap-4">
-                        <a href="#" class="text-decoration-none text-muted interaction-link bookmark-btn"
+                        <a href="#" title="Add Bookmark" class="text-decoration-none text-muted interaction-link bookmark-btn"
                             data-post-id="{{post.id}}">
                             {% if user.is_authenticated and user_bookmarked %}
                             <i class="fa-solid fa-bookmark"></i>
@@ -67,7 +66,7 @@
                             {%endif%}
                         </a>
                         <div class="dropdown">
-                            <a href="#" class="text-decoration-none text-muted interaction-link share-btn"
+                            <a href="#" class="text-decoration-none text-muted interaction-link share-btn" title="Share"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa-solid fa-share"></i>
                             </a>
@@ -107,7 +106,9 @@
                     </div>
                 </div>
                 <div class="container post-content">
+                  {% if post.post_image %} 
                     <img src="{{ post.post_image.url }}" class="img-fluid object-fit-cover">
+                  {%endif%}
                     <h5
                         style="font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;line-height: 1.7; font-size: 16px;">
                         {{post.content|safe}}</h5>
@@ -141,4 +142,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}

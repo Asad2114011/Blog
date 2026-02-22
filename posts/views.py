@@ -37,10 +37,12 @@ def toggle_bookmark(request,id):
     if bookmark.exists():
         bookmark.delete()
         bookmarked=False
+        message='Bookmark removed!'
     else:
         models.Bookmark.objects.create(post=post,user=author)
         bookmarked=True
-    return JsonResponse({'bookmarked':bookmarked})
+        message='Post bookmarked successfully!'
+    return JsonResponse({'bookmarked':bookmarked,'message':message})
 
 @login_required
 def create_post(request):
@@ -95,9 +97,12 @@ def edit_post(request,id):
 
 @login_required
 def delete_post(request,id):
-     post =models.Post.objects.get(pk=id)
-     post.delete()
-     return redirect('home')
+    post =models.Post.objects.get(pk=id)
+    if request.user.author_profile==post.author:
+        if request.method=='POST':
+            post.delete()
+            return JsonResponse({'success':True,'message':'Post deleted successfully!'})
+    return JsonResponse({'success':False,'message':'Failed to delete Post!'})
 
 @login_required
 def add_comment(request,id):
@@ -140,14 +145,14 @@ def edit_comment(request, id):
 
 @login_required
 def delete_comment(request, id):
-    comment = models.Comment.objects.get(id=id)
+    comment=models.Comment.objects.get(id=id)
     
-    if request.user.author_profile == comment.user:
+    if request.user.author_profile==comment.user:
         if request.method=='POST':
            comment.delete()
-           return JsonResponse({'success':True})
+           return JsonResponse({'success':True,'message':'Comment deleted successfully!'})
     
-    return JsonResponse({'success':False})
+    return JsonResponse({'success':False,'message':'Failed to delete comment!'})
 
 @csrf_exempt
 def tinymce_upload(request):

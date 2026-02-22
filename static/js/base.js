@@ -4,7 +4,6 @@ const left_sidebar = document.getElementById('leftSidebar');
 const overlay = document.getElementById('sidebarOverlay');
 const search_icon=document.getElementById('searchIcon');
 const search_form=document.getElementById('searchForm');
-// const cancel_btn=document.getElementById('cancelBtn');
 const sidebar_links = document.querySelectorAll('.sidebar-link');
 const current_page=window.location.pathname;
 const posts_share=document.querySelectorAll('.copy-link');
@@ -35,12 +34,6 @@ search_icon.addEventListener('click',()=>{
     search_form.classList.toggle('active');
 });
 
-
-// cancel_btn.addEventListener('click',()=>{
-//     search_form.classList.remove('active');
-//     search_icon.style.display='block';
-// })
-
 posts_share.forEach(link => {
     link.addEventListener('click', function(e) {
         e.preventDefault();
@@ -48,3 +41,20 @@ posts_share.forEach(link => {
         alert('Link copied!');
     });
 });
+
+function showMessage(message,type='success'){
+    const toast=document.getElementById('liveToast');
+    const toastMessage=document.getElementById('toastMessage');
+
+    toastMessage.textContent=message;
+    if(type=='success'){
+        toast.classList.add('bg-success');
+    }else if(type=='error'){
+        toast.classList.add('bg-danger');
+    }else if(type=='info'){
+        toast.classList.add('bg-info');
+    }
+
+    const Toast=new bootstrap.Toast(toast);
+    Toast.show();
+}

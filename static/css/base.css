@@ -191,12 +191,6 @@
 
     .sidebar-link.active {
       background-color: #b3b0b5;
-      color: #232629;
-      border-right-color: #f48024;
-    }
-
-    .sidebar-link.active {
-      background-color: #b3b0b5;
       color: #0c0d0e;
       font-weight: bold;
       border-right-color: #f48024;
@@ -378,6 +372,9 @@
       .navbar .btn {
         font-size: 12px;
         padding: 4px 8px;
+      }
+      .auth-link{
+        font-size: medium !important;
       }
 
       .footer-container {

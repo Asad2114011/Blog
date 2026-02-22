@@ -59,9 +59,11 @@ document.querySelectorAll('.bookmark-btn').forEach(btn=>{
             if(data.bookmarked){
                 icon.classList.remove('fa-regular');
                 icon.classList.add('fa-solid');
+                showMessage(data.message,'success');
             }else{
                 icon.classList.remove('fa-solid');
                 icon.classList.add('fa-regular');
+                showMessage(data.message,'info');
             }
         });
     });
@@ -69,24 +71,22 @@ document.querySelectorAll('.bookmark-btn').forEach(btn=>{
 // toggle reply form
 document.querySelectorAll('.reply-btn').forEach(btn=>{
     btn.addEventListener('click',function(){
-        const comment=this.dataset.comment;
+        const comment=this.dataset.commentId;
         const replyForm=document.querySelector(`.reply-form-${comment}`);
         replyForm.style.display=replyForm.style.display==='none'?'block':'none';
     });
 });
-
 // cancel reply
 document.querySelectorAll('.cancel-reply').forEach(btn=>{
     btn.addEventListener('click',function(){
-        const comment=this.dataset.comment;
+        const comment=this.dataset.commentId;
         document.querySelector(`.reply-form-${comment}`).style.display='none';
     });
 });
-
 // toggle edit form
 document.querySelectorAll('.edit-btn').forEach(btn=>{
     btn.addEventListener('click',function(){
-        const comment = this.dataset.comment;
+        const comment = this.dataset.commentId;
         const content=document.querySelector(`.comment-content-${comment}`);
         const editForm=document.querySelector(`.edit-form-${comment}`);
         editForm.style.display=editForm.style.display=='none'?'block':'none';
@@ -96,29 +96,31 @@ document.querySelectorAll('.edit-btn').forEach(btn=>{
 // cancel edit
 document.querySelectorAll('.cancel-edit').forEach(btn=>{
     btn.addEventListener('click',function(){
-        const comment = this.dataset.comment;
+        const comment = this.dataset.commentId;
         document.querySelector(`.comment-content-${comment}`).style.display='block';
         document.querySelector(`.edit-form-${comment}`).style.display='none';
     });
 });
 // main comment
-const commentForm=document.querySelector('.add-comment-form');
-commentForm.addEventListener('submit',function(event){
-    event.preventDefault();
-    const post=this.dataset.postId;
-    const comment=this.querySelector('textarea').value; 
-    fetch(`/posts/comment/${post}/`,{
-        method:'POST',
-        headers:{
-            'X-CSRFToken':getCookie('csrftoken'),
-            'Content-Type':'application/x-www-form-urlencoded',
-        },
-        body:`content=${encodeURIComponent(comment)}`
-    }).then(response=>response.json()).then(data=>{
-        if(data.success){
-            location.reload();
-        }
-    });
+document.addEventListener('submit',function(event){
+    const form = event.target;
+    if(form.classList.contains('add-comment-form')){
+        event.preventDefault();
+        const post = form.dataset.postId;
+        const comment = form.querySelector('textarea').value; 
+        fetch(`/posts/comment/${post}/`,{
+            method:'POST',
+            headers:{
+                'X-CSRFToken':getCookie('csrftoken'),
+                'Content-Type':'application/x-www-form-urlencoded',
+            },
+            body:`content=${encodeURIComponent(comment)}`
+        }).then(response=>response.json()).then(data=>{
+            if(data.success){
+                location.reload();
+            }
+        });
+    }
 });
 // reply comment
 document.addEventListener('submit',function(event){
@@ -142,7 +144,6 @@ document.addEventListener('submit',function(event){
         });
     }
 });
-
 // edit comment 
 document.addEventListener('submit',function(event){
     const form=event.target;
@@ -165,7 +166,35 @@ document.addEventListener('submit',function(event){
         });
     }
 });
+// delete post
+document.addEventListener('click', function(event){
+    if(event.target.closest('.delete-post-btn')){
+        const btn = event.target.closest('.delete-post-btn');
+        // console.log('Clicked post id:', btn.dataset.postId);
+        event.preventDefault();
+        if(!confirm('Delete this post permanently!')) return;
 
+        const post = btn.dataset.postId;
+        // console.log('post',post);
+
+        fetch(`/posts/delete/${post}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // console.log(data.success);
+            if(data.success){
+                showMessage(data.message, 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showMessage(data.message, 'error');
+            }
+        });
+    }
+});
 // delete comment 
 document.addEventListener('click',function(event){
     const form=event.target;
@@ -181,7 +210,10 @@ document.addEventListener('click',function(event){
             }
         }).then(response=>response.json()).then(data=>{
             if(data.success){
-                location.reload();
+                showMessage(data.message,'success');
+                setTimeout(()=>location.reload(),1000);
+            }else{
+                showMessage(data.message,'error');
             }
         });
     }
