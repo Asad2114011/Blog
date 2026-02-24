@@ -72,7 +72,7 @@
                     <hr>
                 </div>
 
-                {% for post in data %}
+                {% for post in page_obj %}
                 <div class="card shadow-sm border-0 post-card" style="padding: 10px 0px; background-color: #f2f7f7;">
                     <div class="row g-0">
                         {% if post.post_image %}
@@ -228,7 +228,6 @@
                     {% endfor %}
 
                     <!-- pagination  -->
-                    {% if is_paginated %}
                     <nav aria-label="Page navigation" class="mt-4">
                         <ul class="pagination justify-content-center">
                             {% if page_obj.has_previous %}
@@ -237,7 +236,7 @@
                             </li>
                             {% endif %}
 
-                            {% for num in page_obj.paginator.page_range %}
+                            {% for num in page_range %}
                             {% if page_obj.number == num %}
                             <li class="page-item active">
                                 <span class="page-link">{{ num }}</span>
@@ -256,7 +255,6 @@
                             {% endif %}
                         </ul>
                     </nav>
-                    {% endif %}
                 </div>
             </div>
         </div>

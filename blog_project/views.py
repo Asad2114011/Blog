@@ -36,7 +36,6 @@ def home(request, catagory_slug=None):
     popular_tags=Tag.objects.annotate(post_count=Count('posts')).order_by('-post_count')[:10]
     
     context={
-        'data':page_obj,
         'page_obj':page_obj,
         'page_range':page_range,
         'catagory':catagories,

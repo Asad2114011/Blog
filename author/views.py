@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from posts.models import Post
 from author.models import Author
+from django.core.paginator import Paginator
 # Create your views here.
 
 
@@ -47,7 +48,24 @@ def user_login(request):
 def profile(request):
     author=get_object_or_404(Author,user=request.user)
     data=Post.objects.filter(author=author)
-    return render(request,'profile.html',{'data':data,'author':author})
+
+    paginator=Paginator(data, 1)
+    page_num=request.GET.get('page')
+    page_obj=paginator.get_page(page_num)
+    
+    current_page=page_obj.number
+    total=page_obj.paginator.num_pages
+    start=max(current_page-1,1)
+    end=min(start+3,total)
+    start=max(end-3,1)
+    page_range=range(start,end+1)
+
+    context={
+        'author':author,
+        'page_obj':page_obj,
+        'page_range':page_range,
+    }
+    return render(request,'profile.html',context)
 
 @login_required
 def edit_profile(request):

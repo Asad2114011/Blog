@@ -45,12 +45,12 @@
                                         </small>
                                     </div>
                                 </div>
-                               
+
                             </div>
                             <!-- post content  -->
                             <div class=" mb-2">
                                 <div class="d-flex align-items-center justify-content-between gap-1 ">
-                                    <a href="{% url 'post_details' post.id %}"
+                                    <a href="{% url 'post_details' post.slug %}"
                                         class="text-decoration-none text-dark card-title "
                                         style="font-size: 23px; font-weight: bold;">
                                         {{ post.title }}
@@ -75,27 +75,27 @@
                             <div class="d-flex justify-content-between align-items-center pt-1 border-top">
                                 <div class="d-flex gap-3">
                                     <!-- like -->
-                                    <a href="{% url 'post_details' post.id%}"
+                                    <a href="{% url 'post_details' post.slug%}"
                                         class="text-decoration-none text-muted interaction-link">
                                         <i class="fa-solid fa-heart"></i>
                                         <span class="ms-1">{{ post.likes.count }}</span>
                                     </a>
                                     <!-- comment -->
-                                    <a href="{% url 'post_details' post.id%}"
+                                    <a href="{% url 'post_details' post.slug%}"
                                         class="text-decoration-none text-muted interaction-link">
                                         <i class="fa-solid fa-comment"></i>
                                         <span class="ms-1">{{ post.comments.count }}</span>
                                     </a>
 
-                                    <!-- Views -->
-                                    <a href="{% url 'post_details' post.id%}" class="text-muted">
+                                    <!-- views -->
+                                    <a href="{% url 'post_details' post.slug%}" class="text-muted">
                                         <i class="fa-solid fa-street-view"></i>
                                         <span class="ms-1">{{ post.view_count }}</span>
                                     </a>
                                 </div>
 
                                 <div class="d-flex gap-4">
-                                    <a href="#" class="text-decoration-none text-muted interaction-link">
+                                    <a href="{% url 'post_details' post.slug %}" class="text-decoration-none text-muted interaction-link">
                                         <i class="fa-solid fa-bookmark"></i>
                                     </a>
                                     <div class="dropdown">
@@ -155,7 +155,7 @@
                 <p class="text-muted">No posts available{% if selected_category %} in this category{% endif %}.
                 </p>
             </div> -->
-        {% endfor %}
+            {% endfor %}
 
             <!-- pagination 
             {% if is_paginated %}
@@ -192,7 +192,6 @@
         <p class="text-muted">No posts found</p>
         {% endif %}
     </div>
-
     <!-- authors results -->
     <div class="mb-5">
         <h4 class="mb-3">Authors ({{ authors|length }})</h4>
@@ -213,7 +212,8 @@
                         {% endif %}
                         <h5>{{ author.name }}</h5>
                         <p class="text-muted small">{{ author.bio|truncatewords:15 }}</p>
-                        <a href="{% url 'users_profile' author.slug %}" class="btn btn-outline-primary btn-sm">View Profile</a>
+                        <a href="{% url 'users_profile' author.slug %}" class="btn btn-outline-primary btn-sm">View
+                            Profile</a>
                     </div>
                 </div>
             </div>
@@ -223,8 +223,7 @@
         <p class="text-muted">No authors found</p>
         {% endif %}
     </div>
-
-    <!-- Categories Results -->
+    <!-- categories results -->
     <div class="mb-5">
         <h4 class="mb-3">Categories ({{ categories|length }})</h4>
         {% if categories %}
@@ -238,8 +237,7 @@
         <p class="text-muted">No categories found</p>
         {% endif %}
     </div>
-
-    <!-- Tags Results -->
+    <!-- tags results -->
     <div class="mb-5">
         <h4 class="mb-3">Tags ({{ tags|length }})</h4>
         {% if tags %}
@@ -252,31 +250,32 @@
         <p class="text-muted">No tags found</p>
         {% endif %}
     </div>
-
-    <!-- Pagination -->
-    {% if is_paginated %}
-    <nav aria-label="Search results pagination">
+    <!-- pagination  -->
+    <nav aria-label="Page navigation" class="mt-4">
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
             </li>
             {% endif %}
-
-            {% for num in page_obj.paginator.page_range %}
-            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+            {% for num in page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
             </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endif %}
             {% endfor %}
-
             {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
             </li>
             {% endif %}
         </ul>
     </nav>
-    {% endif %}
 
     {% else %}
     <div class="text-center py-5">
