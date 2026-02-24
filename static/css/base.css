@@ -22,6 +22,13 @@
       z-index: 1000;
     }
 
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
     .navbar-left {
       display: flex;
       align-items: center;
@@ -74,7 +81,7 @@
 
     .search-button {
       border: none;
-
+      margin-right: 20px;
       border: 1px solid black;
       border-radius: 16px;
       padding: 8px 12px;
@@ -276,11 +283,13 @@
     @media (max-width: 768px) {
       .hamburger-menu {
         display: block;
+        padding: 0;
       }
 
       .divider {
         display: none;
       }
+     
 
       .left-sidebar {
         position: fixed;
@@ -353,7 +362,10 @@
         font-size: 14px;
         border-radius: 5px;
       }
-
+      .hamburger-menu{
+        margin: 0;
+        padding: 0;
+      }
 
       .navbar-logo {
         font-size: 16px;
@@ -367,13 +379,18 @@
         display: block;
         text-decoration: none;
         color: black;
+        margin-left: 0;
+      }
+      .auth-btn{
+        margin-right: 0 !important;
       }
 
       .navbar .btn {
         font-size: 12px;
         padding: 4px 8px;
       }
-      .auth-link{
+
+      .auth-link {
         font-size: medium !important;
       }
 
@@ -383,3 +400,4 @@
         text-align: center;
       }
     }
+  

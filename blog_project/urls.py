@@ -37,6 +37,7 @@ urlpatterns = [
     path('tags/', views.all_tags, name='all_tags'),
     path('all_users/', views.all_authors, name='all_users'),
     path('all_users/profile/<slug>', views.users_profile, name='users_profile'),
+    path('health/',views.health,name='health'),
 ]
 
 if settings.DEBUG:

@@ -8,6 +8,7 @@ from author.models import Author
 from catagories.models import catagory, Tag
 from django.contrib.auth.decorators import login_required 
 import os
+from django.http import JsonResponse
 
 def home(request, catagory_slug=None):
     data=Post.objects.select_related('author','catagory').prefetch_related('tags','likes','comments')
@@ -142,3 +143,6 @@ def users_profile(request,slug):
         'author':author,
     }
     return render(request,'users_profile.html',context)
+
+def health(request):
+    return JsonResponse({'status':'ok'})

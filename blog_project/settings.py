@@ -15,6 +15,10 @@ from django.contrib.messages import constants as messages
 from dotenv import load_dotenv
 import os
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,6 +34,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG','False')=='True'
+# DEBUG = True
 
 ALLOWED_HOSTS = ['*','.onrender.com']
 
@@ -57,6 +62,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'tinymce',
+    'cloudinary',
 ]
 TINYMCE_DEFAULT_CONFIG = {
     'height': 360,
@@ -176,6 +182,15 @@ MEDIA_URL='/media/'
 # MEDIA_ROOT=BASE_DIR / 'media'
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
 
+cloudinary.config(
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET'),
+)
+CLOUDINARY_STORAGE={
+    'secure':True,
+}
+DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
