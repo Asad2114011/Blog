@@ -51,7 +51,7 @@
                                         </div>
                                         {% endif %}
                                         <div>
-                                            <a href="#" style="text-decoration: none; color: black;">
+                                            <a href="{% url 'users_profile' post.author.slug %}" style="text-decoration: none; color: black;">
                                                 <h6 class="mb-0" style="font-size: 15px;">{{ post.author.name }}</h6>
                                             </a>
                                             <small class="text-muted">

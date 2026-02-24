@@ -10,10 +10,16 @@
         </div>
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ form.media }} 
+            {{ form.media }}
             {{form|crispy}}
+            <div class="mb-3">
+                <small class="text-muted">
+                    Cant find your tag?
+                    <a href="{% url 'add_tag' %}" class="fw-bold text-decoration-none"> Create a new tag</a>
+                </small>
+            </div>
             <div class="d-grid gap-2 mt-4">
-                <button type="submit" class="btn btn-primary btn-lg" >
+                <button type="submit" class="btn btn-primary btn-lg">
                     Submit
                 </button>
             </div>
@@ -21,7 +27,7 @@
         <div class="login-footer">
             <p class="text-center">
                 Want to create new Post ?
-            <a href="{% url 'create_post' %}" class="text-decoration-none fw-bold">Create Post</a>
+                <a href="{% url 'create_post' %}" class="text-decoration-none fw-bold">Create Post</a>
             </p>
         </div>
     </div>
