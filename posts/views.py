@@ -8,6 +8,8 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+import cloudinary.uploader
+
 
 @login_required
 @require_POST
@@ -159,15 +161,16 @@ def tinymce_upload(request):
     if request.method=="POST" and request.FILES.get('file'):
         file=request.FILES['file']
         
-        upload_path=os.path.join(settings.MEDIA_ROOT,'tinymce')
-        os.makedirs(upload_path, exist_ok=True)
+        # upload_path=os.path.join(settings.MEDIA_ROOT,'tinymce')
+        # os.makedirs(upload_path, exist_ok=True)
         
-        file_path=os.path.join(upload_path,file.name)
-        with open(file_path, 'wb+')as destination:
-            for chunk in file.chunks():
-                destination.write(chunk)
+        # file_path=os.path.join(upload_path,file.name)
+        # with open(file_path, 'wb+')as destination:
+        #     for chunk in file.chunks():
+        #         destination.write(chunk)
         
-        file_url=os.path.join(settings.MEDIA_URL,'tinymce',file.name)
-        return JsonResponse({'location': file_url})
+        # file_url=os.path.join(settings.MEDIA_URL,'tinymce',file.name)
+        upload_result=cloudinary.uploader.upload(file,folder='tinymce')
+        return JsonResponse({'location': upload_result['secure_url']})
 
     return JsonResponse({'error':'Upload failed'},status=400)

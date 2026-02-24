@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Author(models.Model):
@@ -9,7 +10,8 @@ class Author(models.Model):
     slug=models.SlugField(max_length=120,unique=True,blank=True)
     bio=models.TextField()
     email=models.EmailField(max_length=100)
-    profile_image=models.ImageField(upload_to='authors/',blank=True,null=True)
+    # profile_image=models.ImageField(upload_to='authors/',blank=True,null=True)
+    profile_image=CloudinaryField('authors',blank=True,null=True)
 
     created_at=models.DateTimeField(auto_now_add=True)
 
