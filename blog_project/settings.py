@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG','False')=='True'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','.onrender.com']
 
 MESSAGE_TAGS={
     messages.DEBUG: 'secondary',
@@ -73,7 +73,7 @@ LOGIN_URL = '/author/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleWare',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
