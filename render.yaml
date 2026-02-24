@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: django-blog
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn blog_project.wsgi:application"
+    
