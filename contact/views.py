@@ -23,7 +23,7 @@ def contact(request):
             message=message
         )
         try:
-            resend.api_key = os.getenv('RESEND_API_KEY')
+            resend.api_key = os.getenv('RESEND_API_KEY').strip()
             EMAIL=os.getenv('EMAIL')
             resend.Emails.send({
                 "from": "onboarding@resend.dev",
