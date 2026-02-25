@@ -7,6 +7,9 @@ from django.conf import settings
 
 def contact(request):
     if request.method=='POST':
+        print(f"EMAIL USER: {settings.EMAIL_HOST_USER}")
+        print(f"EMAIL PASS: {'SET' if settings.EMAIL_HOST_PASSWORD else 'NOT SET'}")
+        print(f"EMAIL PASS LENGTH: {len(settings.EMAIL_HOST_PASSWORD) if settings.EMAIL_HOST_PASSWORD else 0}")
         message=request.POST.get('message','').strip()
         if not message:
             messages.error(request,'Message can not be empty!')
