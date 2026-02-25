@@ -19,16 +19,19 @@ def contact(request):
             message=message
         )
         messages.success(request,'Message sent successfully!')
-        send_mail(
-            subject=f"New contact message from {author.name}",
-            message=f"""
-                Name:{author.name}
-                Email:{author.email}
-                Message:{message}
-                """,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[settings.EMAIL_HOST_USER],
-            fail_silently=False,
-        )
+        try:
+            send_mail(
+                subject=f"New contact message from {author.name}",
+                message=f"""
+                    Name:{author.name}
+                    Email:{author.email}
+                    Message:{message}
+                    """,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[settings.EMAIL_HOST_USER],
+                fail_silently=False,
+            )
+        except Exception as e:
+            print(f"Email failed: {e}")
     
     return redirect('home')
