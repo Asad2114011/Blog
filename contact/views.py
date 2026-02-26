@@ -8,7 +8,7 @@ import resend
 import os 
 
 
-
+@login_required
 def contact(request):
     if request.method=='POST':
         message=request.POST.get('message','').strip()
