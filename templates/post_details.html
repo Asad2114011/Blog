@@ -114,8 +114,8 @@
                         {{post.content|safe}}</h5>
                 </div>
                 <!-- Comments Section -->
-                {% if user.is_authenticated %}
                 <div class="comment-form mb-4">
+                {% if user.is_authenticated %}
                     <form class="add-comment-form" data-post-id="{{ post.id }}">
                         {% csrf_token %}
                         <div class="mb-3">
@@ -124,6 +124,9 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Post Comment</button>
                     </form>
+                {%else%}
+                    <p style="font-weight: bolder;" >Please <a href="{%url 'user_login' %}"> login</a> to comment</p>
+                {% endif %}
                     <div class="comments-section mt-5" id="comments-section">
                         <h5 class="mb-4">Comments ({{ post.comments.count }})</h5>
                         <!-- Comments List (Top-level only) -->
@@ -136,7 +139,6 @@
                         </div>
                     </div>
                 </div>
-                {% endif %}
 
             </div>
         </div>
