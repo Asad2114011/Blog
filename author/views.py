@@ -49,7 +49,7 @@ def profile(request):
     author=get_object_or_404(Author,user=request.user)
     data=Post.objects.filter(author=author)
 
-    paginator=Paginator(data, 1)
+    paginator=Paginator(data, 5)
     page_num=request.GET.get('page')
     page_obj=paginator.get_page(page_num)
     
